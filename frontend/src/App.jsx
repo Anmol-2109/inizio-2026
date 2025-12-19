@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import CompleteProfile from "./pages/CompleteProfile";
 
+import About from "./pages/About";
+
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import VerifyOtp from "./auth/VerifyOtp";
@@ -45,6 +47,16 @@ function App() {
               </PublicRoute>
             }
           />
+
+          <Route
+            path="about"
+            element={
+             <PublicRoute>
+               <About />
+             </PublicRoute>
+            }
+          />
+
 
           <Route
             path="login"

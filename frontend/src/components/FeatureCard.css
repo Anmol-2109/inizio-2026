@@ -1,0 +1,141 @@
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #0b2b3e;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #5c4d21;
+  color: #f8f4e3;
+  max-width: 340px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.feature-card__content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.feature-card__top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-card__tag {
+  margin: 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #d4af37;
+}
+
+.feature-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-card__title {
+  margin: 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(20px, 2.2vw, 24px);
+  line-height: 1.4;
+}
+
+.feature-card__description {
+  margin: 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ffffff;
+}
+
+.feature-card__actions {
+  display: flex;
+  align-items: center;
+}
+
+.feature-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #f1f0ee;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.feature-card__cta:hover .feature-card__cta-icon,
+.feature-card__cta:focus-visible .feature-card__cta-icon {
+  transform: translateX(2px);
+}
+
+.feature-card__cta-icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  color: #d4af37;
+  transition: transform 0.15s ease-out;
+}
+
+.feature-card__image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  overflow: hidden;
+}
+
+.feature-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.feature-card__image-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 30, 40, 0.95) 0%,
+    rgba(4, 30, 40, 0.6) 35%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.75);
+}
+
+@media (max-width: 480px) {
+  .feature-card {
+    max-width: 100%;
+  }
+
+  .feature-card__content {
+    padding: 20px;
+  }
+
+  .feature-card__image-wrapper {
+    height: 150px;
+  }
+}
+
+

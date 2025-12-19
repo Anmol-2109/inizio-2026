@@ -1,23 +1,174 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api/apiClient";
-import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
 export default function Register() {
-  const [data, setData] = useState({ name:"", email:"", password:"" });
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const submit = async () => {
-    await api.post("/auth/register/", data);
-    navigate(`/verify-otp?email=${data.email}`);
+  const handleSubmit = async () => {
+    if (!data.name || !data.email || !data.password || !data.confirmPassword) {
+      setError("Please fill out all fields.");
+      return;
+    }
+
+    if (data.password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    if (data.password !== data.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
+    try {
+      await api.post("/auth/register/", {
+        name: data.name,
+        email: data.email,
+        password: data.password
+      });
+      navigate(`/verify-otp?email=${encodeURIComponent(data.email)}`);
+    } catch (err) {
+      const message =
+        err.response?.data?.detail ||
+        err.response?.data?.error ||
+        "Registration failed. Please try again.";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onKeyDown = (event) => {
+    if (event.key === "Enter" && !loading) {
+      handleSubmit();
+    }
   };
 
   return (
-    <>
-      <h2>Register</h2>
-      <input placeholder="Name" onChange={e=>setData({...data,name:e.target.value})}/>
-      <input placeholder="Email" onChange={e=>setData({...data,email:e.target.value})}/>
-      <input type="password" placeholder="Password" onChange={e=>setData({...data,password:e.target.value})}/>
-      <button onClick={submit}>Register</button>
-    </>
+    <div className="register-page">
+      <div className="register-glow" />
+
+      <div className="register-shell">
+        <div className="register-left">
+          <div className="register-left-pattern" />
+          <div className="register-left-content">
+            <div className="register-left-kicker">JOIN THE REVOLUTION</div>
+            <h1 className="register-left-title">INIZIO</h1>
+          </div>
+        </div>
+
+        <div className="register-right">
+          <h2 className="register-heading">CREATE ACCOUNT</h2>
+          <p className="register-subtitle">
+            Enter your details to register for Inizio
+          </p>
+
+          <div className="register-form">
+            {error ? <div className="register-error">{error}</div> : null}
+
+            <div className="field-wrapper full-row">
+              <label className="field-label" htmlFor="name">
+                Full Name
+              </label>
+              <div className="input-gradient">
+                <input
+                  id="name"
+                  className="input-field"
+                  placeholder="John Doe"
+                  value={data.name}
+                  onChange={(e) => setData({ ...data, name: e.target.value })}
+                  onKeyDown={onKeyDown}
+                />
+              </div>
+            </div>
+
+            <div className="field-wrapper full-row">
+              <label className="field-label" htmlFor="email">
+                College Email
+              </label>
+              <div className="input-gradient">
+                <input
+                  id="email"
+                  type="email"
+                  className="input-field"
+                  placeholder="name@college.edu"
+                  value={data.email}
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
+                  onKeyDown={onKeyDown}
+                />
+              </div>
+            </div>
+
+            <div className="field-wrapper">
+              <label className="field-label" htmlFor="password">
+                Password
+              </label>
+              <div className="input-gradient">
+                <input
+                  id="password"
+                  type="password"
+                  className="input-field"
+                  placeholder="••••••••"
+                  value={data.password}
+                  onChange={(e) =>
+                    setData({ ...data, password: e.target.value })
+                  }
+                  onKeyDown={onKeyDown}
+                />
+              </div>
+            </div>
+
+            <div className="field-wrapper">
+              <label className="field-label" htmlFor="confirmPassword">
+                Confirm Password
+              </label>
+              <div className="input-gradient">
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  className="input-field"
+                  placeholder="••••••••"
+                  value={data.confirmPassword}
+                  onChange={(e) =>
+                    setData({ ...data, confirmPassword: e.target.value })
+                  }
+                  onKeyDown={onKeyDown}
+                />
+              </div>
+            </div>
+
+            <div className="full-row">
+              <button
+                className={`register-button${loading ? " loading" : ""}`}
+                onClick={handleSubmit}
+                disabled={loading}
+              >
+                {loading ? "Submitting..." : "Get OTP"}
+              </button>
+            </div>
+
+            <div className="register-footer full-row">
+              <span>Already have an account?</span>
+              <Link className="login-link" to="/login">
+                Log in
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

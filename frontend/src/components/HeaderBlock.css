@@ -1,0 +1,205 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@600;700;800&family=Rubik+Dirt&family=Rubik+Lines&display=swap");
+
+.header-block {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #041e28;
+  color: #f8f4e3;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(420px, 70vh, 640px);
+}
+
+.header-block__bg {
+  position: absolute;
+  inset: 0;
+  background: #041e28;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.9);
+  z-index: 0;
+}
+
+.header-block__inner {
+  position: relative;
+  z-index: 1;
+  padding: clamp(16px, 4vw, 32px) clamp(16px, 6vw, 80px);
+  width: min(1200px, 100%);
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+}
+
+.header-block__top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px 24px;
+}
+
+.header-block__logo {
+  font-family: "Rubik Dirt", cursive;
+  font-size: 26px;
+  white-space: nowrap;
+}
+
+.header-block__nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  justify-content: center;
+}
+
+.header-block__nav-link {
+  color: #f8f4e3;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  transition: opacity 120ms ease;
+}
+
+.header-block__nav-link:hover {
+  opacity: 0.82;
+}
+
+.header-block__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.header-block__content {
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 2vw, 16px);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header-block__kicker {
+  margin: 0;
+  font-family: "Rubik Dirt", cursive;
+  font-size: clamp(42px, 8vw, 92px);
+  line-height: 1.05;
+  letter-spacing: 2px;
+  color: #f8f4e3;
+  text-transform: uppercase;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+}
+
+.header-block__title {
+  margin: 0;
+  font-family: "Rubik Lines", cursive;
+  font-size: clamp(28px, 5vw, 56px);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(248, 244, 227, 0.96);
+  text-transform: uppercase;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.header-block__intro {
+  margin: 0;
+  font-size: clamp(15px, 2vw, 18px);
+  font-weight: 700;
+  color: rgba(248, 244, 227, 0.96);
+  line-height: 1.6;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+}
+
+.header-block__cta {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.header-block__btn {
+  border-radius: 8px;
+  padding: 11px 24px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  min-width: 112px;
+}
+
+.header-block__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.header-block__btn:active {
+  transform: translateY(0);
+  opacity: 0.9;
+}
+
+.header-block__btn--primary {
+  background-color: #f1f0ee;
+  color: #041e28;
+  border-color: rgba(4, 30, 40, 0.05);
+}
+
+.header-block__btn--ghost {
+  background: #0f4b63;
+  color: #f8f4e3;
+  border-color: rgba(248, 244, 227, 0.16);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 1024px) {
+  .header-block__nav {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .header-block__inner {
+    padding: 16px 16px 32px;
+    gap: 20px;
+  }
+
+  .header-block__top {
+    grid-template-columns: auto 1fr;
+    gap: 10px 12px;
+  }
+
+  .header-block__actions {
+    justify-self: end;
+  }
+
+  .header-block__content {
+    max-width: 100%;
+  }
+
+  .header-block__cta {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 540px) {
+  .header-block {
+    min-height: unset;
+  }
+
+  .header-block__btn {
+    width: 100%;
+  }
+
+  .header-block__cta {
+    flex-direction: column;
+  }
+}

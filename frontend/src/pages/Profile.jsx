@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../api/apiClient";
 import useAuthStore from "../store/useAuthStore";
-import { useNavigate, Link } from "react-router-dom";
+import Footer from "../components/Footer";
+import "./Profile.css";
 
 export default function Profile() {
   const { access } = useAuthStore();
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
-  const [userEmail, setUserEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -16,7 +17,6 @@ export default function Profile() {
       navigate("/login");
       return;
     }
-
     fetchProfile();
   }, [access, navigate]);
 
@@ -24,19 +24,12 @@ export default function Profile() {
     try {
       setLoading(true);
       setError("");
-      
-      // Get profile data
       const profileRes = await api.get("/auth/profile/");
       setProfile(profileRes.data);
-      
-      // Get user email from profile response
-      if (profileRes.data.email) {
-        setUserEmail(profileRes.data.email);
-      }
-    } catch (error) {
-      console.error("Error fetching profile:", error);
-      setError(error.response?.data?.detail || "Failed to load profile");
-      if (error.response?.status === 401) {
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+      setError(err.response?.data?.detail || "Failed to load profile");
+      if (err.response?.status === 401) {
         navigate("/login");
       }
     } finally {
@@ -44,132 +37,94 @@ export default function Profile() {
     }
   };
 
+  const avatarInitial = useMemo(() => {
+    const fullName = profile?.full_name || "";
+    const initial = fullName.trim().charAt(0);
+    return initial ? initial.toUpperCase() : "I";
+  }, [profile?.full_name]);
+
+  const renderValue = (value) =>
+    value ? <span className="profile-value">{value}</span> : <span className="profile-value profile-empty">Not set</span>;
+
   if (loading) {
     return (
-      <div style={{ padding: 20, textAlign: "center" }}>
-        <p>Loading profile...</p>
+      <div className="profile-page">
+        <div className="profile-card">
+          <p style={{ margin: 0, color: "#e5e7eb" }}>Loading profile...</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={{ padding: 20, color: "red" }}>
-        <p>Error: {error}</p>
-        <button onClick={() => navigate("/")}>Go Home</button>
+      <div className="profile-page">
+        <div className="profile-card" style={{ alignItems: "center" }}>
+          <p style={{ color: "#fca5a5", margin: 0 }}>{error}</p>
+          <div className="profile-actions">
+            <Link to="/">
+              <button className="profile-btn secondary">Back to Home</button>
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!profile) {
     return (
-      <div style={{ padding: 20 }}>
-        <p>Profile not found</p>
-        <Link to="/profile/edit">
-          <button style={{ padding: "10px 20px", backgroundColor: "#007bff", color: "white", border: "none", borderRadius: 4, cursor: "pointer" }}>
-            Create Profile
-          </button>
-        </Link>
+      <div className="profile-page">
+        <div className="profile-card" style={{ alignItems: "center" }}>
+          <p style={{ color: "#e5e7eb", margin: 0 }}>Profile not found.</p>
+          <div className="profile-actions">
+            <Link to="/profile/edit">
+              <button className="profile-btn primary">Create Profile</button>
+            </Link>
+            <Link to="/">
+              <button className="profile-btn secondary">Back to Home</button>
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto", padding: 20 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 30 }}>
-        <h2 style={{ color: "#000", margin: 0 }}>My Profile</h2>
-        <Link to="/profile/edit">
-          <button style={{ 
-            padding: "10px 20px", 
-            backgroundColor: "#007bff", 
-            color: "white", 
-            border: "none", 
-            borderRadius: 4, 
-            cursor: "pointer" 
-          }}>
-            Edit Profile
-          </button>
-        </Link>
-      </div>
-
-      <div style={{ 
-        backgroundColor: "#f8f9fa", 
-        padding: 20, 
-        borderRadius: 8, 
-        border: "1px solid #dee2e6" 
-      }}>
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ display: "block", color: "#666", fontSize: 14, marginBottom: 5, fontWeight: "bold" }}>
-            Email
-          </label>
-          <p style={{ color: "#000", margin: 0, padding: "8px 12px", backgroundColor: "#fff", borderRadius: 4, border: "1px solid #ced4da" }}>
-            {userEmail || "Not available"}
-          </p>
-        </div>
-
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ display: "block", color: "#666", fontSize: 14, marginBottom: 5, fontWeight: "bold" }}>
-            Full Name
-          </label>
-          <p style={{ color: "#000", margin: 0, padding: "8px 12px", backgroundColor: "#fff", borderRadius: 4, border: "1px solid #ced4da" }}>
-            {profile.full_name || "Not set"}
-          </p>
-        </div>
-
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ display: "block", color: "#666", fontSize: 14, marginBottom: 5, fontWeight: "bold" }}>
-            Department
-          </label>
-          <p style={{ color: "#000", margin: 0, padding: "8px 12px", backgroundColor: "#fff", borderRadius: 4, border: "1px solid #ced4da" }}>
-            {profile.department || "Not set"}
-          </p>
-        </div>
-
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ display: "block", color: "#666", fontSize: 14, marginBottom: 5, fontWeight: "bold" }}>
-            Year
-          </label>
-          <p style={{ color: "#000", margin: 0, padding: "8px 12px", backgroundColor: "#fff", borderRadius: 4, border: "1px solid #ced4da" }}>
-            {profile.year || "Not set"}
-          </p>
-        </div>
-
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ display: "block", color: "#666", fontSize: 14, marginBottom: 5, fontWeight: "bold" }}>
-            Phone Number
-          </label>
-          <p style={{ color: "#000", margin: 0, padding: "8px 12px", backgroundColor: "#fff", borderRadius: 4, border: "1px solid #ced4da" }}>
-            {profile.phone || "Not set"}
-          </p>
-        </div>
-
-        {profile.is_staff !== undefined && (
-          <div style={{ marginBottom: 20 }}>
-            <label style={{ display: "block", color: "#666", fontSize: 14, marginBottom: 5, fontWeight: "bold" }}>
-              Account Type
-            </label>
-            <p style={{ color: "#000", margin: 0, padding: "8px 12px", backgroundColor: "#fff", borderRadius: 4, border: "1px solid #ced4da" }}>
-              {profile.is_staff ? "Admin" : "Regular User"}
-            </p>
+    <>
+      <div className="profile-page">
+        <div className="profile-glow" />
+        <div className="profile-card">
+          <div className="profile-avatar" aria-label="Profile avatar">
+            {avatarInitial}
           </div>
-        )}
-      </div>
+          <h2 className="profile-name">{profile.full_name || "Your Name"}</h2>
 
-      <div style={{ marginTop: 20 }}>
-        <Link to="/">
-          <button style={{ 
-            padding: "10px 20px", 
-            backgroundColor: "#6c757d", 
-            color: "white", 
-            border: "none", 
-            borderRadius: 4, 
-            cursor: "pointer" 
-          }}>
-            Back to Home
-          </button>
-        </Link>
+          <div className="profile-grid">
+            <span className="profile-label">Email</span>
+            {renderValue(profile.email)}
+
+            <span className="profile-label">Branch</span>
+            {renderValue(profile.department)}
+
+            <span className="profile-label">Year</span>
+            {renderValue(profile.year)}
+
+            <span className="profile-label">Phone</span>
+            {renderValue(profile.phone)}
+          </div>
+
+          <div className="profile-actions">
+            <Link to="/profile/edit">
+              <button className="profile-btn primary">Edit Profile</button>
+            </Link>
+            <Link to="/">
+              <button className="profile-btn secondary">Back to Home</button>
+            </Link>
+          </div>
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 

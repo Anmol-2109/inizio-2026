@@ -1,0 +1,66 @@
+.how-we-work {
+  background-color: #041e28;
+  display: flex;
+  justify-content: center;
+  padding: clamp(48px, 8vw, 96px) clamp(20px, 6vw, 64px);
+}
+
+.how-we-work__inner {
+  width: min(1280px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  align-items: center;
+}
+
+.how-we-work__header {
+  text-align: center;
+  max-width: 768px;
+}
+
+.how-we-work__title {
+  margin: 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(32px, 4vw, 40px);
+  line-height: 1.2;
+  color: #ffd260;
+}
+
+.how-we-work__subtitle {
+  margin: 12px 0 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #f8f4e3;
+}
+
+.how-we-work__grid {
+  display: grid;
+  width: 100%;
+  gap: 24px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1024px) {
+  .how-we-work__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .how-we-work {
+    padding-inline: 16px;
+  }
+
+  .how-we-work__inner {
+    gap: 32px;
+  }
+
+  .how-we-work__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+

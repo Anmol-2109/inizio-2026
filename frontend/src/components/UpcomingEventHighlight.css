@@ -1,0 +1,116 @@
+ .upcoming-event {
+  background-color: #041e28;
+  display: flex;
+  justify-content: center;
+  padding: clamp(56px, 9vw, 120px) clamp(20px, 6vw, 64px);
+}
+
+.upcoming-event__inner {
+  width: min(1280px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5vw, 48px);
+  align-items: center;
+}
+
+.upcoming-event__header {
+  max-width: 768px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.upcoming-event__title {
+  margin: 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.2;
+  color: #ffd260;
+}
+
+.upcoming-event__subtitle {
+  margin: 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.4;
+  color: #bdae8e;
+}
+
+.upcoming-event__actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.upcoming-event__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out, color 150ms ease-out;
+}
+
+.upcoming-event__btn--primary {
+  background-color: #c7aa63;
+  border: 1px solid #5c4d21;
+  color: #041e28;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45);
+}
+
+.upcoming-event__btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+  background-color: #e0c376;
+}
+
+.upcoming-event__btn--ghost {
+  background: transparent;
+  border: none;
+  color: #f8f4e3;
+  gap: 8px;
+}
+
+.upcoming-event__btn-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+.upcoming-event__image-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.7);
+}
+
+.upcoming-event__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .upcoming-event {
+    padding-inline: 16px;
+  }
+}
+
+

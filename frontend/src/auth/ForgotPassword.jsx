@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../api/apiClient";
 import { useNavigate, Link } from "react-router-dom";
+import "./AuthShared.css";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ export default function ForgotPassword() {
 
   const submit = async () => {
     if (!email || !email.includes("@")) {
-      setError("Please enter a valid email address");
+      setError("Please enter a valid email address.");
       return;
     }
 
@@ -22,15 +23,14 @@ export default function ForgotPassword() {
     try {
       await api.post("/auth/forgot-password/", { email });
       setSuccess(true);
-      // Navigate after a short delay to show success message
       setTimeout(() => {
         navigate(`/verify-reset-otp?email=${encodeURIComponent(email)}`);
-      }, 1500);
+      }, 1200);
     } catch (error) {
       console.error("Forgot password error:", error);
       setError(
-        error.response?.data?.detail || 
-        error.response?.data?.error || 
+        error.response?.data?.detail ||
+        error.response?.data?.error ||
         "Failed to send OTP. Please check your email and try again."
       );
     } finally {
@@ -38,81 +38,72 @@ export default function ForgotPassword() {
     }
   };
 
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" && !loading && !success) {
+      submit();
+    }
+  };
+
   return (
-    <div style={{ maxWidth: 400, margin: "0 auto", padding: 20 }}>
-      <h2>Forgot Password</h2>
-      <p style={{ color: "#666", marginBottom: 20 }}>
-        Enter your email address and we'll send you an OTP to reset your password.
-      </p>
-
-      {error && (
-        <div style={{ 
-          color: "red", 
-          marginBottom: 10, 
-          padding: 10, 
-          backgroundColor: "#ffe6e6",
-          borderRadius: 4 
-        }}>
-          {error}
+    <div className="auth-page">
+      <div className="auth-glow" />
+      <div className="auth-shell">
+        <div className="auth-left">
+          <div className="auth-left-pattern" />
+          <div className="auth-left-content">
+            <div className="auth-left-kicker">RESET WITH CONFIDENCE</div>
+            <h1 className="auth-left-title">INIZIO</h1>
+          </div>
         </div>
-      )}
 
-      {success && (
-        <div style={{ 
-          color: "green", 
-          marginBottom: 10, 
-          padding: 10, 
-          backgroundColor: "#e6ffe6",
-          borderRadius: 4 
-        }}>
-          OTP sent successfully! Redirecting...
+        <div className="auth-right">
+          <div>
+            <h2 className="auth-heading">FORGOT PASSWORD</h2>
+            <p className="auth-subtitle">
+              Enter your email to receive an OTP and reset your password.
+            </p>
+          </div>
+
+          <div className="auth-form">
+            {error ? <div className="auth-error">{error}</div> : null}
+            {success ? (
+              <div className="auth-success">OTP sent! Redirecting...</div>
+            ) : null}
+
+            <div className="auth-field-wrapper">
+              <label className="auth-field-label" htmlFor="email">
+                Email Address
+              </label>
+              <div className="auth-input-gradient">
+                <input
+                  id="email"
+                  type="email"
+                  className="auth-input"
+                  placeholder="name@college.edu"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={onKeyDown}
+                  disabled={loading || success}
+                />
+              </div>
+            </div>
+
+            <button
+              className={`auth-button${loading ? " loading" : ""}`}
+              onClick={submit}
+              disabled={loading || success}
+            >
+              {loading ? "Sending OTP..." : success ? "OTP Sent!" : "Send OTP"}
+            </button>
+
+            <div className="auth-footer">
+              <span>Remembered your password?</span>
+              <Link className="auth-link-primary" to="/login">
+                Back to Login
+              </Link>
+            </div>
+          </div>
         </div>
-      )}
-
-      <div style={{ marginBottom: 15 }}>
-        <input 
-          type="email"
-          placeholder="Enter your email" 
-          value={email}
-          onChange={e=>setEmail(e.target.value)}
-          style={{ width: "100%", padding: 8 }}
-          disabled={loading || success}
-          onKeyPress={(e) => {
-            if (e.key === "Enter" && !loading && !success) {
-              submit();
-            }
-          }}
-        />
-      </div>
-
-      <button 
-        onClick={submit} 
-        disabled={loading || success}
-        style={{ 
-          width: "100%", 
-          padding: 10, 
-          marginBottom: 10,
-          backgroundColor: (loading || success) ? "#ccc" : "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: 4,
-          cursor: (loading || success) ? "not-allowed" : "pointer"
-        }}
-      >
-        {loading ? "Sending OTP..." : success ? "OTP Sent!" : "Send OTP"}
-      </button>
-
-      <div style={{ textAlign: "center", marginTop: 15 }}>
-        <Link 
-          to="/login" 
-          style={{ 
-            color: "#007bff", 
-            textDecoration: "none",
-            fontSize: "14px"
-          }}
-        >
-          Back to Login
-        </Link>
       </div>
     </div>
   );

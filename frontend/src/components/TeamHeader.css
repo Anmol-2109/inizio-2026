@@ -1,0 +1,121 @@
+.team-header {
+  position: relative;
+  width: 100vw;
+  min-height: 480px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-top: -3vw;
+  box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.5), 0px 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.team-header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 40px 70px 0 70px;
+}
+
+.team-header-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 1.75;
+  color: #ffd260;
+  margin: 0;
+}
+
+.team-header-date {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 2;
+  color: white;
+  margin: 0;
+}
+
+.team-header-info {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 1.75;
+  color: white;
+  margin: 0;
+}
+
+.team-header-info .label {
+  color: #d4af37;
+}
+
+.team-header-description {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+  color: white;
+  text-align: center;
+  margin: 0;
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 920px;
+  width: 90%;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .team-header {
+    min-height: 400px;
+    padding: 0;
+  }
+  .team-header-content {
+    padding: 30px 40px 0 40px;
+  }
+  .team-header-name {
+    font-size: 36px;
+  }
+  .team-header-date {
+    font-size: 28px;
+  }
+  .team-header-info {
+    font-size: 24px;
+  }
+  .team-header-description {
+    font-size: 16px;
+    bottom: 30px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .team-header {
+    min-height: 360px;
+    padding: 0;
+    /* margin-top: -3vw; */
+  }
+  .team-header-content {
+    padding: 24px 20px 0 20px;
+    /* padding-top: 0%; */
+  }
+  .team-header-name {
+    font-size: 28px;
+  }
+  .team-header-date {
+    font-size: 20px;
+  }
+  .team-header-info {
+    font-size: 18px;
+  }
+  .team-header-description {
+    font-size: 14px;
+    bottom: 20px;
+  }
+}

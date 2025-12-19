@@ -1,0 +1,485 @@
+.team-detail-page {
+  min-height: 100vh;
+  background: rgba(4, 30, 40, 0.95);
+  position: relative;
+}
+
+/* Header Section */
+/* .team-detail-header {
+  background: linear-gradient(180deg, rgba(20, 50, 70, 0.9) 0%, rgba(4, 30, 40, 0.95) 100%);
+  padding: 40px 100px 60px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 0%h;
+} */
+
+.team-detail-header {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  overflow: visible;
+}
+/* 
+.team-detail-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><defs><linearGradient id="wave" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:%23ff6b35;stop-opacity:0.3"/><stop offset="50%" style="stop-color:%23a855f7;stop-opacity:0.3"/><stop offset="100%" style="stop-color:%233b82f6;stop-opacity:0.3"/></linearGradient></defs><path d="M0,200 Q300,100 600,200 T1200,200" stroke="url(%23wave)" stroke-width="3" fill="none"/></svg>') no-repeat center;
+  background-size: cover;
+  opacity: 0.5;
+  pointer-events: none;
+} */
+
+.team-detail-header::before {
+  display: none;
+}
+
+.team-detail-page {
+  min-height: 100vh;
+  background: rgba(4, 30, 40, 0.95);
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.event-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 48px;
+  color: #ffd260;
+  margin: 0 0 10px 0;
+}
+
+.event-datetime {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 36px;
+  color: white;
+  margin: 0 0 20px 0;
+}
+
+.event-info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.event-info-item {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+}
+
+.event-info-item .label {
+  color: #d4af37;
+}
+
+.event-info-item .value {
+  color: white;
+}
+
+.event-description {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+  color: white;
+  text-align: center;
+  max-width: 935px;
+  margin: 30px auto 0;
+}
+
+/* Team Card Section */
+.team-card-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px 60px;
+}
+
+.team-card {
+  background: linear-gradient(180deg, rgba(62, 150, 185, 0.5) 0%, rgba(10, 77, 136, 0.5) 100%);
+  border: 2px solid rgba(190, 176, 176, 0.45);
+  border-radius: 50px;
+  padding: 40px 50px;
+  width: 100%;
+  max-width: 650px;
+  opacity: 0.95;
+}
+
+.team-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: white;
+  margin: 0 0 5px 0;
+}
+
+.team-id {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 30px 0;
+}
+
+.team-members-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+}
+
+/* Member List */
+.member-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.member-item:last-child {
+  border-bottom: none;
+}
+
+.member-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.member-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: white;
+}
+
+.member-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: white;
+}
+
+.member-pending {
+  opacity: 0.5;
+}
+
+.member-pending .member-name::after {
+  content: ' (Invited)';
+}
+
+/* Badges */
+.badge-leader {
+  background: #2dc04a;
+  border-radius: 5px;
+  padding: 4px 15px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: white;
+}
+
+.btn-remove {
+  background: #e94649;
+  border: none;
+  border-radius: 5px;
+  padding: 4px 15px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-remove:hover {
+  background: #d13639;
+}
+
+/* Leader Controls */
+.leader-controls {
+  margin-top: 30px;
+}
+
+.leader-controls-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 15px 0;
+}
+
+.btn-add-member {
+  width: 100%;
+  padding: 18px;
+  border: 2px dashed #b24c4c;
+  border-radius: 15px;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-add-member:hover {
+  background: rgba(178, 76, 76, 0.2);
+  border-color: #d45c5c;
+}
+
+.btn-leave-team {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 15px;
+  background: #f06;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0px 55px 100px 0px rgba(0, 0, 0, 0.25);
+  transition: background 0.2s;
+}
+
+.btn-leave-team:hover {
+  background: #e0005c;
+}
+
+.btn-accept {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 15px;
+  background: #28a745;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background 0.2s;
+}
+
+.btn-accept:hover {
+  background: #218838;
+}
+
+/* Status Messages */
+.team-status-warning {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+}
+
+.team-status-warning p {
+  color: #856404;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.team-status-warning .title {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.team-status-success {
+  background: #d4edda;
+  border: 2px solid #28a745;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+}
+
+.team-status-success p {
+  color: #155724;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.team-status-success .title {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+/* Loading & Error States */
+.loading-container,
+.error-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 30, 40, 0.95);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+}
+
+.error-container {
+  color: #ff6b6b;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .team-detail-header {
+    padding: 0;  /* <-- CHANGE TO 0 */
+    margin: 0;
+  }
+  
+  .event-name {
+    font-size: 40px;
+  }
+  
+  .event-datetime {
+    font-size: 28px;
+  }
+  
+  .event-info-item {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  .team-detail-header {
+    padding: 0;  /* <-- CHANGE TO 0 */
+    margin: 0;
+  }
+  
+  .event-name {
+    font-size: 32px;
+  }
+  
+  .event-datetime {
+    font-size: 24px;
+  }
+  
+  .event-info-item {
+    font-size: 22px;
+  }
+  
+  .event-description {
+    font-size: 16px;
+  }
+  
+  .team-card {
+    padding: 30px 25px;
+    border-radius: 30px;
+  }
+  
+  .team-name {
+    font-size: 32px;
+  }
+  
+  .team-id {
+    font-size: 20px;
+  }
+  
+  .team-members-title {
+    font-size: 20px;
+  }
+  
+  .member-name {
+    font-size: 16px;
+  }
+  
+  .badge-leader,
+  .btn-remove {
+    font-size: 14px;
+    padding: 3px 10px;
+  }
+  
+  .btn-add-member,
+  .btn-leave-team,
+  .btn-accept {
+    font-size: 18px;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-detail-header {
+    padding: 0;  /* <-- CHANGE TO 0 */
+    margin: 0;
+  }
+  
+  .event-name {
+    font-size: 28px;
+  }
+  
+  .event-datetime {
+    font-size: 20px;
+  }
+  
+  .event-info-item {
+    font-size: 18px;
+  }
+  
+  .event-description {
+    font-size: 14px;
+  }
+  
+  .team-card {
+    padding: 25px 20px;
+    border-radius: 25px;
+  }
+  
+  .team-name {
+    font-size: 26px;
+  }
+  
+  .team-id {
+    font-size: 18px;
+  }
+  
+  .team-members-title {
+    font-size: 18px;
+  }
+  
+  .member-item {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .member-name {
+    font-size: 14px;
+  }
+  
+  .member-avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+  
+  .btn-add-member,
+  .btn-leave-team,
+  .btn-accept {
+    font-size: 16px;
+    padding: 12px;
+  }
+}
+

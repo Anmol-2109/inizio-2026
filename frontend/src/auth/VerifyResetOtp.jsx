@@ -1,11 +1,13 @@
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import api from "../api/apiClient";
+import "./AuthShared.css";
 
 export default function VerifyResetOtp() {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resent, setResent] = useState(false);
   const [params] = useSearchParams();
   const email = params.get("email");
   const navigate = useNavigate();
@@ -13,12 +15,12 @@ export default function VerifyResetOtp() {
   const verify = async () => {
     if (!email) {
       setError("Email is required. Please try forgot password again.");
-      setTimeout(() => navigate("/forgot-password"), 2000);
+      setTimeout(() => navigate("/forgot-password"), 1200);
       return;
     }
     
     if (!otp || otp.length !== 6) {
-      setError("Please enter a valid 6-digit OTP");
+      setError("Please enter a valid 6-digit OTP.");
       return;
     }
 
@@ -26,9 +28,7 @@ export default function VerifyResetOtp() {
     setError("");
 
     try {
-      // Backend expects 'code' not 'otp'
       const res = await api.post("/auth/verify-reset-otp/", { email, code: otp });
-      // Backend returns reset_token which should be used for password reset
       if (res.data.reset_token) {
         navigate(`/reset-password?email=${encodeURIComponent(email)}&token=${res.data.reset_token}`);
       } else {
@@ -46,76 +46,101 @@ export default function VerifyResetOtp() {
     }
   };
 
+  const resend = async () => {
+    if (!email) {
+      setError("Email is required. Please try forgot password again.");
+      setTimeout(() => navigate("/forgot-password"), 1200);
+      return;
+    }
+
+    try {
+      await api.post("/auth/forgot-password/", { email });
+      setResent(true);
+      setTimeout(() => setResent(false), 2000);
+    } catch (error) {
+      console.error("Resend OTP error:", error);
+      setError(error.response?.data?.error || "Failed to resend OTP. Please try again.");
+    }
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" && !loading && otp.length === 6) {
+      verify();
+    }
+  };
+
   return (
-    <div style={{ maxWidth: 400, margin: "0 auto", padding: 20 }}>
-      <h2>Verify Reset OTP</h2>
-      
-      {email && (
-        <p style={{ color: "#666", marginBottom: 20 }}>
-          Enter the 6-digit OTP sent to: <strong>{email}</strong>
-        </p>
-      )}
-
-      {error && (
-        <div style={{ 
-          color: "red", 
-          marginBottom: 10, 
-          padding: 10, 
-          backgroundColor: "#ffe6e6",
-          borderRadius: 4 
-        }}>
-          {error}
+    <div className="auth-page">
+      <div className="auth-glow" />
+      <div className="auth-shell">
+        <div className="auth-left">
+          <div className="auth-left-pattern" />
+          <div className="auth-left-content">
+            <div className="auth-left-kicker">SECURE YOUR ACCOUNT</div>
+            <h1 className="auth-left-title">INIZIO</h1>
+          </div>
         </div>
-      )}
 
-      <div style={{ marginBottom: 15 }}>
-        <input 
-          type="text"
-          placeholder="Enter 6-digit OTP" 
-          value={otp}
-          onChange={e=>setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-          maxLength={6}
-          style={{ width: "100%", padding: 8, fontSize: "18px", letterSpacing: "4px", textAlign: "center" }}
-          disabled={loading}
-          onKeyPress={(e) => {
-            if (e.key === "Enter" && !loading && otp.length === 6) {
-              verify();
-            }
-          }}
-        />
-      </div>
+        <div className="auth-right">
+          <div>
+            <h2 className="auth-heading">VERIFY RESET OTP</h2>
+            <p className="auth-subtitle">
+              Enter the 6-digit code we sent to {email || "your email"}.
+            </p>
+          </div>
 
-      <button 
-        onClick={verify} 
-        disabled={loading || otp.length !== 6}
-        style={{ 
-          width: "100%", 
-          padding: 10, 
-          marginBottom: 10,
-          backgroundColor: (loading || otp.length !== 6) ? "#ccc" : "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: 4,
-          cursor: (loading || otp.length !== 6) ? "not-allowed" : "pointer"
-        }}
-      >
-        {loading ? "Verifying..." : "Verify OTP"}
-      </button>
+          <div className="auth-form">
+            {error ? <div className="auth-error">{error}</div> : null}
+            {resent ? <div className="auth-success">OTP resent to your email</div> : null}
 
-      <div style={{ textAlign: "center", marginTop: 15 }}>
-        <Link 
-          to={`/forgot-password`}
-          style={{ 
-            color: "#007bff", 
-            textDecoration: "none",
-            fontSize: "14px"
-          }}
-        >
-          Resend OTP
-        </Link>
+            <div className="auth-field-wrapper">
+              <label className="auth-field-label" htmlFor="otp">
+                6-digit OTP
+              </label>
+              <div className="auth-input-gradient">
+                <input
+                  id="otp"
+                  className="auth-input"
+                  inputMode="numeric"
+                  placeholder="------"
+                  maxLength={6}
+                  value={otp}
+                  onChange={(e) =>
+                    setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
+                  }
+                  onKeyDown={onKeyDown}
+                  disabled={loading}
+                  style={{ letterSpacing: "6px", textAlign: "center" }}
+                />
+              </div>
+            </div>
+
+            <button
+              className={`auth-button${loading ? " loading" : ""}`}
+              onClick={verify}
+              disabled={loading || otp.length !== 6}
+            >
+              {loading ? "Verifying..." : "Verify OTP"}
+            </button>
+
+            <div className="auth-footer">
+              <span>Need a new code?</span>
+              <button
+                type="button"
+                className="auth-link-primary"
+                style={{ background: "none", border: "none", padding: 0 }}
+                onClick={resend}
+                disabled={loading}
+              >
+                Resend OTP
+              </button>
+              <Link className="auth-link-primary" to="/forgot-password">
+                Back
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-
-
