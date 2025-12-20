@@ -21,10 +21,10 @@ from rest_framework_simplejwt.views import TokenRefreshView
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('auth/', include('accounts.urls')),  # our custom auth
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # JWT token refresh endpoint
-    path("events/", include("events.urls")),
-    path("admin/events/", include("events.urls")),
+    path('api/auth/', include('accounts.urls')),  # our custom auth
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # JWT token refresh endpoint
+    path("api/events/", include("events.urls")),
+    # path("admin/events/", include("events.urls")),
 
 
     # Removed dj-rest-auth registration URLs as we use custom User model without username
