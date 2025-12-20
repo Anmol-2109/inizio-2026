@@ -111,8 +111,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # }
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),
+    "default": dj_database_url.parse(
+        os.getenv("DATABASE_PUBLIC_URL")
+        if os.getenv("USE_PUBLIC_DB") == "true"
+        else os.getenv("DATABASE_URL"),
         conn_max_age=600,
         ssl_require=True,
     )
