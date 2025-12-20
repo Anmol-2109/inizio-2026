@@ -7,25 +7,26 @@ import UpcomingEventHighlight from "../components/UpcomingEventHighlight";
 import HowWeWorkSection from "../components/HowWeWorkSection";
 import SponsorsSection from "../components/SponsorsSection";
 import ContactSection from "../components/ContactSection";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Home() {
-  const { access, refresh, logout, isStaff } = useAuthStore();
+  const access = useAuthStore((s) => s.access);
+  const refresh = useAuthStore((s) => s.refresh);
+  const logout = useAuthStore((s) => s.logout);
+  const isStaff = useAuthStore((s) => s.isStaff);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-     
       if (refresh) {
         await api.post("/auth/logout/", { refresh });
       }
-      // Always call logout to clear local state, even if API call fails
+    } catch (e) {
+      console.error("Logout API error:", e);
+    } finally {
       logout();
-      // Redirect to login page
-      window.location.href = "/login";
-    } catch (error) {
-      console.error("Logout error:", error);
-      // Still logout locally even if API call fails
-      logout();
-      window.location.href = "/login";
+      navigate("/login", { replace: true });
     }
   };
 

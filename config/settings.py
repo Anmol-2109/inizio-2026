@@ -11,19 +11,24 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from datetime import timedelta
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c_l7f8r-gt#de7!x-+5+yr)+f#a%&bn%17m-vdm323^2nh^j7-'
+# SECRET_KEY = 'django-insecure-c_l7f8r-gt#de7!x-+5+yr)+f#a%&bn%17m-vdm323^2nh^j7-'
+SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     # 'www.mypremiumsite.com',  # Your real domain
@@ -31,6 +36,8 @@ ALLOWED_HOSTS = [
     # '123.456.78.90',          # Your server's actual IP address
     'localhost',              # Keep this for local testing
     '127.0.0.1', 
+    'inizio-backend.up.railway.app',
+
 ]
 
 # Application definition
@@ -97,16 +104,46 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+DB_HOST = os.environ.get("DB_HOST")
+if DB_HOST:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("DB_NAME"),
+        'USER': os.environ.get("DB_USER"),
+        'PASSWORD': os.environ.get("DB_PASSWORD"),
+        'HOST': os.environ.get("DB_HOST"),
+        'PORT': os.environ.get("DB_PORT", "5432"),
+    }
+}
+else:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'no-reply@iecell.com'
 
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# DEFAULT_FROM_EMAIL = 'no-reply@iecell.com'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
 
 
 # Password validation
@@ -152,8 +189,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-from datetime import timedelta
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -180,8 +215,11 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # for normal email flows
 # settings.py
 FIREBASE_KEY_PATH = None  # will be set later
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
+CELERY_BROKER_URL = os.environ.get("REDIS_URL")
+CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL")
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -189,7 +227,26 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 TIME_ZONE = 'Asia/Kolkata'
 
 # Google Login Settings
-GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"
+# GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID"
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
+
 
 # Frontend URL for invite links
-FRONTEND_BASE_URL = "http://localhost:5173"
+# FRONTEND_BASE_URL = "http://localhost:5173"
+
+
+INSTALLED_APPS += ['corsheaders']
+
+MIDDLEWARE.insert(2, 'corsheaders.middleware.CorsMiddleware')
+
+FRONTEND_BASE_URL = os.environ.get("FRONTEND_BASE_URL")
+
+if FRONTEND_BASE_URL:
+    CORS_ALLOWED_ORIGINS = [FRONTEND_BASE_URL]
+    CSRF_TRUSTED_ORIGINS = [FRONTEND_BASE_URL]
+
+
+CSRF_TRUSTED_ORIGINS = [
+    os.environ.get("FRONTEND_BASE_URL"),
+]
+

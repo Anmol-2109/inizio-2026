@@ -6,7 +6,7 @@ import uuid
 
 class Event(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, null=True, blank=True)
+    slug = models.SlugField(unique=True)
 
     intro = models.CharField(max_length=300, blank=True)
     description = models.TextField()
@@ -55,7 +55,7 @@ class EventTeam(models.Model):
 
     def refresh_is_active(self):
         accepted = self.members.filter(status="ACCEPTED").count()
-        self.is_active = accepted >= self.event.min_team_size
+        self.is_active = self.event.min_team_size <= accepted <= self.event.max_team_size
         self.save()
 
 
@@ -76,7 +76,11 @@ class EventTeamMember(models.Model):
 
     class Meta:
         unique_together = ("team", "email")
-
+        indexes = [
+            models.Index(fields=["email"]),
+            models.Index(fields=["status"]),
+            models.Index(fields=["team"]),
+        ]
     def __str__(self):
         return f"{self.email} - {self.team.team_name}"
 
@@ -134,6 +138,9 @@ class Notification(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["user", "is_read"]),
+        ]
 
     def __str__(self):
         return f"Notify({self.user.email})"

@@ -5,7 +5,7 @@ import "./Register.css";
 
 export default function Register() {
   const [data, setData] = useState({
-    name: "",
+    full_name: "",
     email: "",
     password: "",
     confirmPassword: ""
@@ -35,7 +35,7 @@ export default function Register() {
 
     try {
       await api.post("/auth/register/", {
-        name: data.name,
+        full_name: data.name,
         email: data.email,
         password: data.password
       });

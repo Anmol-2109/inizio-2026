@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.db import models
 
+from django.contrib.auth.hashers import make_password, check_password
 
 
 class UserManager(BaseUserManager):
@@ -71,7 +72,7 @@ class EmailOTP(models.Model):
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='otps')
-    code = models.CharField(max_length=6)
+    code = models.CharField(max_length=128)  # hashed OTP
     purpose = models.CharField(max_length=20, choices=PURPOSE_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     is_used = models.BooleanField(default=False)
@@ -82,6 +83,9 @@ class EmailOTP(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.purpose} - {self.code}"
+    
+    def verify(self, raw_code):
+        return check_password(raw_code, self.code)
     
 
 class ResetPasswordToken(models.Model):

@@ -6,6 +6,8 @@ from .serializers import RegisterSerializer, VerifyOTPSerializer, LoginSerialize
 from .models import Profile,User,EmailOTP
 from datetime import timedelta 
 from django.utils import timezone
+from django.contrib.auth.hashers import make_password
+
 
 import random   # <-- This is correct
 
@@ -137,7 +139,7 @@ class ResendOTPView(APIView):
 
         EmailOTP.objects.create(
             user=user,
-            code=otp_code,
+            code=make_password(otp_code),
             purpose="register",
             expires_at=expires_at
         )

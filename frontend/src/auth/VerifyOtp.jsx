@@ -32,17 +32,21 @@ export default function VerifyOtp() {
       const res = await api.post("/auth/verify-otp/", { email, code: otp });
 
       if (res.data.access) {
-        const { setAuth } = useAuthStore.getState();
-        setAuth({
-          access: res.data.access,
-          refresh: res.data.refresh,
-          profileComplete: res.data.profile_complete,
-          isStaff: res.data.is_staff || false
-        });
-        navigate(res.data.profile_complete ? "/" : "/complete-profile");
-      } else {
-        navigate("/login");
-      }
+      const { setAuth } = useAuthStore.getState();
+
+      setAuth({
+        access: res.data.access,
+        refresh: res.data.refresh,
+        profileComplete: res.data.profile_complete,
+    isStaff: res.data.is_staff || false
+      });
+
+  // /    / ✅ Always go to home
+  // PublicRoute will redirect to /complete-profile if needed
+      navigate("/", { replace: true });
+    } else {
+      navigate("/login", { replace: true });
+    }
     } catch (error) {
       console.error("OTP verification error:", error);
       setError(

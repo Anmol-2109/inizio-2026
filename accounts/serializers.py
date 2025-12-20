@@ -4,6 +4,7 @@ from .models import User, EmailOTP ,Profile,ResetPasswordToken
 from datetime import timedelta
 import random
 import uuid
+from django.contrib.auth.hashers import make_password
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -53,7 +54,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         EmailOTP.objects.create(
             user=user,
-            code=otp_code,
+            code=make_password(otp_code),
             purpose='register',
             expires_at=expires_at
         )
@@ -74,6 +75,7 @@ class VerifyOTPSerializer(serializers.Serializer):
     def validate(self, attrs):
         email = attrs.get('email')
         code = attrs.get('code')
+
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
@@ -82,7 +84,6 @@ class VerifyOTPSerializer(serializers.Serializer):
         try:
             otp = EmailOTP.objects.filter(
                 user=user,
-                code=code,
                 purpose='register',
                 is_used=False
             ).latest('created_at')
@@ -92,15 +93,18 @@ class VerifyOTPSerializer(serializers.Serializer):
         if not otp.is_valid():
             raise serializers.ValidationError("OTP expired or already used")
 
+        if not otp.verify(code):
+            raise serializers.ValidationError("Invalid OTP")
+
         attrs['user'] = user
         attrs['otp'] = otp
         return attrs
+
 
     def save(self, **kwargs):
         user = self.validated_data['user']
         otp = self.validated_data['otp']
         user.is_active = True
-        user.is_email_verified = True
         user.save()
         otp.is_used = True
         otp.save()
@@ -179,7 +183,8 @@ class ForgotPasswordSerializer(serializers.Serializer):
 
         EmailOTP.objects.create(
             user=user,
-            code=otp_code,
+            code=make_password(otp_code),
+
             purpose='reset_password',
             expires_at=expires_at
         )
@@ -207,20 +212,23 @@ class VerifyResetOTPSerializer(serializers.Serializer):
 
         try:
             otp = EmailOTP.objects.filter(
-                user=user,
-                code=code,
-                purpose='reset_password',
-                is_used=False
+            user=user,
+            purpose='reset_password',
+            is_used=False
             ).latest('created_at')
         except EmailOTP.DoesNotExist:
             raise serializers.ValidationError("Invalid OTP")
 
         if not otp.is_valid():
-            raise serializers.ValidationError("OTP expired or already used.")
+            raise serializers.ValidationError("OTP expired or already used")
+
+        if not otp.verify(code):
+            raise serializers.ValidationError("Invalid OTP")
 
         attrs['user'] = user
         attrs['otp'] = otp
         return attrs
+
 
     def save(self, **kwargs):
         user = self.validated_data['user']  # <-- You forgot this

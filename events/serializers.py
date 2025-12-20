@@ -116,6 +116,10 @@ class RegisterTeamSerializer(serializers.Serializer):
 
         if len(members) > event.max_team_size:
             raise serializers.ValidationError({"members": "Team too large"})
+        
+        now = timezone.now()
+        if not (event.registration_open <= now <= event.registration_close):
+            raise serializers.ValidationError("Registration is closed for this event")
 
         # Check if any member is already in another team for this event (active membership only)
         for email in members:
@@ -187,6 +191,11 @@ class EventAdminSerializer(serializers.ModelSerializer):
         request = self.context["request"]
         validated_data["created_by"] = request.user
         return super().create(validated_data)
+    
+    def validate(self, attrs):
+        if attrs["start_time"] >= attrs["end_time"]:
+            raise serializers.ValidationError("Event end time must be after start time")
+        return attrs
 
 
 from rest_framework import serializers
@@ -201,4 +210,4 @@ class NotificationSerializer(serializers.ModelSerializer):
 
 
 class DeviceTokenSerializer(serializers.Serializer):
-    token = serializers.CharField()
+    token = serializers.CharField(max_length=255)

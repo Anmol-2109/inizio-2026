@@ -3,6 +3,8 @@ import api from "../api/apiClient";
 import useAuthStore from "../store/useAuthStore";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
+import { useSearchParams } from "react-router-dom";
+
 
 export default function Login() {
   const [data, setData] = useState({ email: "", password: "" });
@@ -11,10 +13,13 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const setAuth = useAuthStore((s) => s.setAuth);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   // Check for redirect parameter
-  const urlParams = new URLSearchParams(window.location.search);
-  const next = urlParams.get("next");
+  // const urlParams = new URLSearchParams(window.location.search);
+  // const next = urlParams.get("next");
+
+  
 
   const handleSubmit = async () => {
     if (!data.email || !data.password) {
@@ -33,15 +38,16 @@ export default function Login() {
         profileComplete: res.data.profile_complete,
         isStaff: res.data.is_staff || false
       });
+      navigate("/", { replace: true });
 
       // Handle redirect after login
-      if (next) {
-        navigate(next);
-      } else if (res.data.profile_complete) {
-        navigate("/");
-      } else {
-        navigate("/complete-profile");
-      }
+      // if (next) {
+      //   navigate(next);
+      // } else if (res.data.profile_complete) {
+      //   navigate("/");
+      // } else {
+      //   navigate("/complete-profile");
+      // }
     } catch (error) {
       console.error("Login error:", error);
       console.error("Error response:", error.response?.data);

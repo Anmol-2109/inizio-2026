@@ -1,4 +1,6 @@
 from .models import Notification, EventTeamMember
+import logging
+
 
 def notify_user(user, message, event=None):
     """

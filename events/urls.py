@@ -26,9 +26,9 @@ urlpatterns = [
 
     path("teams/<int:team_id>/leave/", LeaveTeamView.as_view()),
 
-    path("", AdminEventListCreateView.as_view(), name="admin-events"),
-    path("<int:id>/", AdminEventUpdateView.as_view(), name="admin-event-update"),
-    path("<int:id>/delete/", AdminEventSoftDeleteView.as_view(), name="admin-event-delete"),
+    path("admin/", AdminEventListCreateView.as_view(), name="admin-events"),
+    path("admin/<int:id>/", AdminEventUpdateView.as_view(), name="admin-event-update"),
+    path("admin/<int:id>/delete/", AdminEventSoftDeleteView.as_view(), name="admin-event-delete"),
 
     path("notifications/", NotificationListView.as_view()),
     path("notifications/<int:pk>/read/", NotificationReadView.as_view()),
