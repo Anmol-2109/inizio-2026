@@ -30,13 +30,7 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
-    # 'www.mypremiumsite.com',  # Your real domain
-    # 'mypremiumsite.com',      # The version without www
-    # '123.456.78.90',          # Your server's actual IP address
-    'localhost',              # Keep this for local testing
-    '127.0.0.1', 
-    'inizio-backend.up.railway.app',
-
+    ".railway.app",
 ]
 
 # Application definition
@@ -71,6 +65,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -226,7 +221,7 @@ GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
 
 INSTALLED_APPS += ['corsheaders']
 
-MIDDLEWARE.insert(2, 'corsheaders.middleware.CorsMiddleware')
+# MIDDLEWARE.insert(2, 'corsheaders.middleware.CorsMiddleware')
 
 FRONTEND_BASE_URL = os.environ.get("FRONTEND_BASE_URL")
 
@@ -234,10 +229,7 @@ if FRONTEND_BASE_URL:
     CORS_ALLOWED_ORIGINS = [FRONTEND_BASE_URL]
     CSRF_TRUSTED_ORIGINS = [FRONTEND_BASE_URL]
 
-
-CSRF_TRUSTED_ORIGINS = [
-    os.environ.get("FRONTEND_BASE_URL"),
-]
+CORS_ALLOW_CREDENTIALS = True
 
 
 
