@@ -112,24 +112,46 @@ export default function Events() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showPast]);
 
+  // const fetchEvents = async () => {
+  //   try {
+  //     setLoading(true);
+  //     setError("");
+  //     const endpoint = showPast ? "/events/past/" : "/events/upcoming/";
+  //     const res = await api.get(endpoint);
+  //     setEvents(Array.isArray(res.data) ? res.data : []);
+  //   } catch (err) {
+  //     console.error("Error fetching events:", err);
+  //     setError(
+  //       err.response?.data?.detail ||
+  //         err.response?.data?.error ||
+  //         "Failed to load events"
+  //     );
+  //     setEvents([]);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const fetchEvents = async () => {
-    try {
-      setLoading(true);
-      setError("");
-      const endpoint = showPast ? "/events/past/" : "/events/upcoming/";
-      const res = await api.get(endpoint);
-      setEvents(res.data || []);
-    } catch (err) {
-      console.error("Error fetching events:", err);
-      setError(
-        err.response?.data?.detail ||
-          err.response?.data?.error ||
-          "Failed to load events"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+    setError("");
+    const endpoint = showPast ? "/events/past/" : "/events/upcoming/";
+    const res = await api.get(endpoint);
+
+    setEvents(Array.isArray(res.data) ? res.data : []);
+  } catch (err) {
+    console.error("Error fetching events:", err);
+    setError(
+      err.response?.data?.detail ||
+        err.response?.data?.error ||
+        "Failed to load events"
+    );
+    setEvents([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const scrollToEvents = () => {
     const section = document.getElementById("our-events-section");
