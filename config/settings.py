@@ -30,7 +30,10 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
+    "inizio-2026-production.up.railway.app",
     ".railway.app",
+    "localhost",
+    "127.0.0.1",
 ]
 
 # Application definition
@@ -233,10 +236,14 @@ INSTALLED_APPS += ['corsheaders']
 FRONTEND_BASE_URL = os.environ.get("FRONTEND_BASE_URL")
 
 if FRONTEND_BASE_URL:
+    FRONTEND_BASE_URL = FRONTEND_BASE_URL.rstrip("/")
     CORS_ALLOWED_ORIGINS = [FRONTEND_BASE_URL]
     CSRF_TRUSTED_ORIGINS = [FRONTEND_BASE_URL]
 
 CORS_ALLOW_CREDENTIALS = True
 
 
-
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
