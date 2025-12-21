@@ -138,6 +138,8 @@ EMAIL_TIMEOUT = 20     # 🔥 REQUIRED on Railway
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
