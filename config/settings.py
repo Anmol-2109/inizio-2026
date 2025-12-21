@@ -257,13 +257,13 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 
-import threading
-from django.conf import settings
+# import threading
+# from django.conf import settings
 
-def start_celery():
-    import os
-    if os.environ.get("RUN_MAIN") != "true":
-        return
-    os.system("celery -A config worker -l info &")
+# def start_celery():
+#     import os
+#     if os.environ.get("RUN_MAIN") != "true":
+#         return
+#     os.system("celery -A config worker -l info &")
 
-threading.Thread(target=start_celery).start()
+# threading.Thread(target=start_celery).start()
