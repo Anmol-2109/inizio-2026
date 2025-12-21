@@ -212,7 +212,7 @@ FIREBASE_KEY_PATH = None  # will be set later
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
 CELERY_BROKER_URL = os.environ.get("REDIS_URL")
-CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL")
+# CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL")
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -247,3 +247,15 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+
+
+import threading
+from django.conf import settings
+
+def start_celery():
+    import os
+    if os.environ.get("RUN_MAIN") != "true":
+        return
+    os.system("celery -A config worker -l info &")
+
+threading.Thread(target=start_celery).start()
