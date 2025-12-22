@@ -21,6 +21,8 @@ def init_firebase():
     _firebase_initialized = True
 
 
+from firebase_admin import messaging
+
 def send_push_notification(title, body, tokens, event_id=None):
     init_firebase()
 
@@ -28,17 +30,29 @@ def send_push_notification(title, body, tokens, event_id=None):
         print("⚠ Push skipped (Firebase not initialized)")
         return
 
+    if not tokens:
+        print("⚠ No FCM tokens found")
+        return
+
     data_payload = {}
     if event_id:
         data_payload["event_id"] = str(event_id)
 
-    message = messaging.MulticastMessage(
-        notification=messaging.Notification(
-            title=title,
-            body=body,
-        ),
-        data=data_payload,   # 👈 THIS IS STEP 6
-        tokens=tokens,
-    )
+    messages = []
 
-    return messaging.send_multicast(message)
+    for token in tokens:
+        messages.append(
+            messaging.Message(
+                notification=messaging.Notification(
+                    title=title,
+                    body=body,
+                ),
+                data=data_payload,
+                token=token,
+            )
+        )
+
+    response = messaging.send_all(messages)
+    print(f"[ADMIN EVENT CREATED] Sent push notification to {response.success_count} devices")
+
+    return response
