@@ -114,7 +114,8 @@ def process_event_reminder(event_id, message, send_email=False):
         send_push_notification(
             title=event.name,
             body=message,
-            tokens=tokens
+            tokens=tokens,
+            event_id=event.id 
         )
 
     # Email (only 1-hour reminder)

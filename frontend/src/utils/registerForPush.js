@@ -1,0 +1,31 @@
+import { getToken } from "firebase/messaging";
+import { messaging } from "../firebase";
+import api from "../api/apiClient";
+
+export async function registerForPush() {
+  try {
+    // Ask permission
+    const permission = await Notification.requestPermission();
+    if (permission !== "granted") {
+      console.log("🔕 Notification permission denied");
+      return;
+    }
+
+    // Get FCM token
+    const token = await getToken(messaging, {
+      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY
+    });
+
+    if (!token) {
+      console.log("⚠ No FCM token generated");
+      return;
+    }
+
+    // Send to backend
+    await api.post("/events/save-device-token/", { token });
+
+    console.log("✅ Device token saved");
+  } catch (err) {
+    console.error("Push registration failed", err);
+  }
+}

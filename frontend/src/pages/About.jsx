@@ -15,7 +15,7 @@ import mentorship from "../assets/About_images/mentorship.jpg"
 import support from "../assets/About_images/support.jpg"
 import industry from "../assets/About_images/industry.jpg"
 // 
-const PLACEHOLDER_IMAGE =''
+const PLACEHOLDER_IMAGE =null
 
 export default function About() {
   return (

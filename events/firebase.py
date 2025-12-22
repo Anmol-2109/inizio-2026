@@ -22,15 +22,24 @@ def init_firebase():
     _firebase_initialized = True
 
 
-def send_push_notification(title, body, tokens):
+def send_push_notification(title, body, tokens, event_id=None):
     init_firebase()
 
     if not firebase_admin._apps:
         print("⚠ Push skipped (Firebase not initialized)")
         return
 
+    data_payload = {}
+    if event_id:
+        data_payload["event_id"] = str(event_id)
+
     message = messaging.MulticastMessage(
-        notification=messaging.Notification(title=title, body=body),
-        tokens=tokens
+        notification=messaging.Notification(
+            title=title,
+            body=body,
+        ),
+        data=data_payload,   # 👈 THIS IS STEP 6
+        tokens=tokens,
     )
+
     return messaging.send_multicast(message)

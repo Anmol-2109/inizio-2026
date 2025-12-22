@@ -4,6 +4,8 @@ import useAuthStore from "../store/useAuthStore";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 import { useSearchParams } from "react-router-dom";
+import { registerForPush } from "../utils/registerForPush";
+
 
 
 export default function Login() {
@@ -38,6 +40,7 @@ export default function Login() {
         profileComplete: res.data.profile_complete,
         isStaff: res.data.is_staff || false
       });
+      registerForPush();
       navigate("/", { replace: true });
 
       // Handle redirect after login
