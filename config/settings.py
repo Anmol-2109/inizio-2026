@@ -25,7 +25,7 @@ load_dotenv(BASE_DIR / ".env")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
-FIREBASE_KEY_PATH = BASE_DIR / "firebase-service-account.json"
+FIREBASE_KEY_PATH = os.environ.get("FIREBASE_KEY_PATH")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
