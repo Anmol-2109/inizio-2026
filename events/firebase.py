@@ -23,6 +23,9 @@ def init_firebase():
 
 from firebase_admin import messaging
 
+from firebase_admin import messaging
+import firebase_admin
+
 def send_push_notification(title, body, tokens, event_id=None):
     init_firebase()
 
@@ -38,21 +41,22 @@ def send_push_notification(title, body, tokens, event_id=None):
     if event_id:
         data_payload["event_id"] = str(event_id)
 
-    messages = []
+    # ✅ THIS must be MulticastMessage
+    message = messaging.MulticastMessage(
+        tokens=tokens,
+        notification=messaging.Notification(
+            title=title,
+            body=body,
+        ),
+        data=data_payload,
+    )
 
-    for token in tokens:
-        messages.append(
-            messaging.Message(
-                notification=messaging.Notification(
-                    title=title,
-                    body=body,
-                ),
-                data=data_payload,
-                token=token,
-            )
-        )
+    response = messaging.send_each_for_multicast(message)
 
-    response = messaging.send_each_for_multicast(messages)
-    print(f"[ADMIN EVENT CREATED] Sent push notification to {response.success_count} devices")
+    print(
+        f"[ADMIN EVENT CREATED] "
+        f"Sent push notification to {response.success_count} devices, "
+        f"failed: {response.failure_count}"
+    )
 
     return response
