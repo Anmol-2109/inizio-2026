@@ -11,8 +11,7 @@ def init_firebase():
     if _firebase_initialized:
         return
 
-    key_path = getattr(settings, "FIREBASE_KEY_PATH", None)
-
+    key_path = settings.FIREBASE_KEY_PATH
     if not key_path or not os.path.exists(key_path):
         print("⚠ Firebase disabled (serviceAccountKey.json not found)")
         return

@@ -281,3 +281,11 @@ SESSION_COOKIE_SECURE = True
 #     os.system("celery -A config worker -l info &")
 
 # threading.Thread(target=start_celery).start()
+
+
+print(
+    "🔥 FIREBASE_SERVICE_ACCOUNT_JSON exists:",
+    bool(os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON"))
+)
+
+print("🔥 FIREBASE_KEY_PATH:", FIREBASE_KEY_PATH)
