@@ -28,18 +28,23 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 FIREBASE_KEY_PATH = None
 
-firebase_json = os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON")
+try:
+    firebase_json = os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON")
 
-if firebase_json:
-    firebase_dir = BASE_DIR / "firebase"
-    firebase_dir.mkdir(exist_ok=True)
+    if firebase_json:
+        firebase_dir = BASE_DIR / "firebase"
+        firebase_dir.mkdir(exist_ok=True)
 
-    firebase_path = firebase_dir / "firebase-service-account.json"
+        firebase_path = firebase_dir / "firebase-service-account.json"
 
-    with open(firebase_path, "w") as f:
-        json.dump(json.loads(firebase_json), f)
+        with open(firebase_path, "w") as f:
+            json.dump(json.loads(firebase_json), f)
 
-    FIREBASE_KEY_PATH = str(firebase_path)
+        FIREBASE_KEY_PATH = str(firebase_path)
+
+except Exception as e:
+    print("❌ Firebase JSON error:", e)
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
