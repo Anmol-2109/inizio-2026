@@ -52,7 +52,7 @@ def send_push_notification(title, body, tokens, event_id=None):
             )
         )
 
-    response = messaging.send_all(messages)
+    response = messaging.send_each_for_multicast(messages)
     print(f"[ADMIN EVENT CREATED] Sent push notification to {response.success_count} devices")
 
     return response
