@@ -234,7 +234,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # for normal email flows
 
 
 # settings.py
-FIREBASE_KEY_PATH = None  # will be set later
+# FIREBASE_KEY_PATH = None  # will be set later
 
 # CELERY_BROKER_URL = 'redis://localhost:6379/0'
 # CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
