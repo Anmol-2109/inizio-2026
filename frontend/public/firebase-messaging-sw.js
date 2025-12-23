@@ -35,7 +35,6 @@
 importScripts("https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js");
 
-// 🔹 Firebase web config (PUBLIC keys – safe)
 firebase.initializeApp({
   apiKey: "...",
   authDomain: "...",
@@ -46,42 +45,41 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// 🔔 Handle background messages
+// 🔔 DATA-ONLY background message
 messaging.onBackgroundMessage(function (payload) {
-  const title = payload.notification?.title || "New Notification";
+  console.log("🔥 BG MESSAGE:", payload);
+
+  const title = payload.data?.title || "New Event";
+  const body = payload.data?.body || "";
+  const eventId = payload.data?.event_id;
 
   const options = {
-    body: payload.notification?.body,
-    data: payload.data, // contains event_id
+    body,
+    data: { event_id: eventId },
   };
 
   self.registration.showNotification(title, options);
 });
 
-// 🖱️ Handle notification click
+// 🖱️ CLICK HANDLER (will ALWAYS fire now)
 self.addEventListener("notificationclick", function (event) {
-  console.log("🔥 NOTIFICATION CLICKED");
-  console.log("🔥 Notification data:", event.notification.data);
-
   event.notification.close();
 
   const eventId = event.notification?.data?.event_id;
   if (!eventId) return;
 
-  const url = `/events/${eventId}`;
+  const url = `${self.location.origin}/events/${eventId}`;
 
   event.waitUntil(
     clients.matchAll({ type: "window", includeUncontrolled: true })
       .then((clientList) => {
         for (const client of clientList) {
-          if (client.url.includes(self.location.origin) && "focus" in client) {
+          if ("focus" in client) {
             client.navigate(url);
             return client.focus();
           }
         }
-        if (clients.openWindow) {
-          return clients.openWindow(url);
-        }
+        return clients.openWindow(url);
       })
   );
 });

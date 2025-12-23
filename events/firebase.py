@@ -47,8 +47,9 @@ def send_push_notification(title, body, tokens, event_id=None):
         notification=messaging.Notification(
             title=title,
             body=body,
+            event_id=str(event_id),
         ),
-        data=data_payload,
+        # data=data_payload,
     )
 
     response = messaging.send_each_for_multicast(message)
