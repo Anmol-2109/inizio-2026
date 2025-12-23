@@ -12,3 +12,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
+
+onMessage(messaging, (payload) => {
+  console.log("🔥 Foreground push received:", payload);
+
+  const title = payload.data?.title || "New Notification";
+  const body = payload.data?.body || "";
+
+  if (Notification.permission === "granted") {
+    new Notification(title, {
+      body,
+      data: { event_id: payload.data?.event_id },
+    });
+  }
+});
