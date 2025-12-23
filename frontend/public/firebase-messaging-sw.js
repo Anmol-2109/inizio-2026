@@ -60,6 +60,9 @@ messaging.onBackgroundMessage(function (payload) {
 
 // 🖱️ Handle notification click
 self.addEventListener("notificationclick", function (event) {
+  console.log("🔥 NOTIFICATION CLICKED");
+  console.log("🔥 Notification data:", event.notification.data);
+
   event.notification.close();
 
   const eventId = event.notification?.data?.event_id;
