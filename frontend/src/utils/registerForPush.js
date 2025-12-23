@@ -40,7 +40,7 @@ export async function registerForPush() {
 
     if ("serviceWorker" in navigator) {
       registration = await navigator.serviceWorker.register(
-        "/firebase-messaging-sw-v3.js"
+        "/firebase-messaging-sw-v4.js"
       );
       console.log("✅ SW registered:", registration);
     }

@@ -55,29 +55,27 @@ messaging.onBackgroundMessage(function (payload) {
   });
 });
 
-self.addEventListener("notificationclick", function (event) {
+self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
   const eventId = event.notification?.data?.event_id;
   if (!eventId) return;
 
-  const url = `${self.location.origin}/events/${eventId}`;
+  const url = new URL(`/events/${eventId}`, self.location.origin).href;
 
   event.waitUntil(
-    clients.matchAll({
-      type: "window",
-      includeUncontrolled: true,
-    }).then((clientList) => {
-      // If app already open → focus & navigate
-      for (const client of clientList) {
-        if ("focus" in client) {
-          client.navigate(url);
-          return client.focus();
-        }
+    (async () => {
+      const clientsArr = await clients.matchAll({
+        type: "window",
+        includeUncontrolled: true,
+      });
+
+      if (clientsArr.length > 0) {
+        await clientsArr[0].navigate(url);
+        return clientsArr[0].focus();
       }
 
-      // Otherwise open new window
       return clients.openWindow(url);
-    })
+    })()
   );
 });
