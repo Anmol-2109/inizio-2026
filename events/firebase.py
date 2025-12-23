@@ -37,19 +37,18 @@ def send_push_notification(title, body, tokens, event_id=None):
         print("⚠ No FCM tokens found")
         return
 
-    data_payload = {}
+    # ✅ DATA-ONLY MESSAGE
+    data_payload = {
+        "title": title,
+        "body": body,
+    }
+
     if event_id:
         data_payload["event_id"] = str(event_id)
 
-    # ✅ THIS must be MulticastMessage
     message = messaging.MulticastMessage(
         tokens=tokens,
-        notification=messaging.Notification(
-            title=title,
-            body=body,
-            event_id=str(event_id),
-        ),
-        # data=data_payload,
+        data=data_payload
     )
 
     response = messaging.send_each_for_multicast(message)

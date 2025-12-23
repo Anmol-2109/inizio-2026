@@ -63,6 +63,7 @@ messaging.onBackgroundMessage(function (payload) {
 
 // 🖱️ CLICK HANDLER (will ALWAYS fire now)
 self.addEventListener("notificationclick", function (event) {
+  console.log("notification clicked");
   event.notification.close();
 
   const eventId = event.notification?.data?.event_id;
