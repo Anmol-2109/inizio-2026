@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { registerForPush } from "../utils/registerPush";
+import { registerForPush } from "../utils/registerForPush";
 
 export default function MainLayout() {
   const isAuthenticated = useAuthStore((s) => !!s.access);
