@@ -3,6 +3,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { registerForPush } from "../utils/registerForPush";
 import useAuthStore from "../store/useAuthStore";
+import { useEffect } from "react";
+
+
+
 
 
 export default function MainLayout() {
