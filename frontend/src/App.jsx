@@ -112,9 +112,9 @@ function App() {
           <Route
             path="events/:id"
             element={
-              <PublicRoute>
+              // <PublicRoute>
                 <EventDetail />
-              </PublicRoute>
+              // </PublicRoute>
             }
           />
 

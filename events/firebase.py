@@ -31,14 +31,21 @@ from firebase_admin import messaging
 def send_push_notification(title, body, tokens, event_id=None):
     init_firebase()
 
-    if not firebase_admin._apps or not tokens:
+    if not firebase_admin._apps:
+        print("⚠ Push skipped (Firebase not initialized)")
+        return
+
+    if not tokens:
+        print("⚠ No FCM tokens found")
         return
 
     data_payload = {
         "title": title,
         "body": body,
-        "event_id": str(event_id),
     }
+
+    if event_id:
+        data_payload["event_id"] = str(event_id)
 
     message = messaging.MulticastMessage(
         tokens=tokens,
@@ -51,15 +58,5 @@ def send_push_notification(title, body, tokens, event_id=None):
         f"[ADMIN EVENT CREATED] Sent push notification to "
         f"{response.success_count} devices, failed: {response.failure_count}"
     )
-
-    # 🔥 CLEANUP DEAD TOKENS
-    for idx, resp in enumerate(response.responses):
-        if not resp.success:
-            failed_token = tokens[idx]
-            error = resp.exception
-            print(f"❌ Removing dead token: {failed_token[:20]}... Reason: {error}")
-
-            from .models import DeviceToken
-            DeviceToken.objects.filter(token=failed_token).delete()
 
     return response

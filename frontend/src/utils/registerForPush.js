@@ -36,39 +36,28 @@ import api from "../api/apiClient";
 
 export async function registerForPush() {
   try {
-    // ✅ 1. Register service worker FIRST
     let registration = null;
 
     if ("serviceWorker" in navigator) {
       registration = await navigator.serviceWorker.register(
-        "/firebase-messaging-sw-v2.js"   // 👈 NEW SW FILE
+        "/firebase-messaging-sw-v2.js"
       );
-      console.log("✅ Service Worker registered:", registration);
+      console.log("✅ SW registered:", registration);
     }
 
-    // ✅ 2. Ask permission
     const permission = await Notification.requestPermission();
-    if (permission !== "granted") {
-      console.log("🔕 Notification permission denied");
-      return;
-    }
+    if (permission !== "granted") return;
 
-    // ✅ 3. Get FCM token (bind to SW)
     const token = await getToken(messaging, {
       vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-      serviceWorkerRegistration: registration, // 👈 IMPORTANT
+      serviceWorkerRegistration: registration,
     });
 
-    if (!token) {
-      console.log("⚠ No FCM token generated");
-      return;
-    }
+    if (!token) return;
 
-    // ✅ 4. Send token to backend
     await api.post("/events/save-device-token/", { token });
-
     console.log("✅ Device token saved");
   } catch (err) {
-    console.error("❌ Push registration failed", err);
+    console.error("Push registration failed", err);
   }
 }

@@ -45,42 +45,22 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// 🔔 DATA-ONLY background message
 messaging.onBackgroundMessage(function (payload) {
-  console.log("🔥 BG MESSAGE:", payload);
-
   const title = payload.data?.title || "New Event";
   const body = payload.data?.body || "";
-  const eventId = payload.data?.event_id;
 
-  const options = {
+  self.registration.showNotification(title, {
     body,
-    data: { event_id: eventId },
-  };
-
-  self.registration.showNotification(title, options);
+    data: { event_id: payload.data?.event_id },
+  });
 });
 
-// 🖱️ CLICK HANDLER (will ALWAYS fire now)
 self.addEventListener("notificationclick", function (event) {
-  console.log("notification clicked");
   event.notification.close();
 
   const eventId = event.notification?.data?.event_id;
   if (!eventId) return;
 
   const url = `${self.location.origin}/events/${eventId}`;
-
-  event.waitUntil(
-    clients.matchAll({ type: "window", includeUncontrolled: true })
-      .then((clientList) => {
-        for (const client of clientList) {
-          if ("focus" in client) {
-            client.navigate(url);
-            return client.focus();
-          }
-        }
-        return clients.openWindow(url);
-      })
-  );
+  event.waitUntil(clients.openWindow(url));
 });
