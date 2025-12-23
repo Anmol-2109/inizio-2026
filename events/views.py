@@ -328,7 +328,8 @@ class AdminEventListCreateView(generics.ListCreateAPIView):
         send_push_notification(
             title="New Event Announced!",
             body=f"{event.name} is now live.",
-            tokens=tokens
+            tokens=tokens,
+            event_id=event.id
         )
 
 
