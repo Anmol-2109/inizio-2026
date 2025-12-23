@@ -1,4 +1,5 @@
 // src/firebase.js
+// src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getMessaging, onMessage } from "firebase/messaging";
 
@@ -13,10 +14,20 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
 
-// 🔔 TEST FIRST: ALERT ONLY
-if (typeof window !== "undefined") {
+// 🔔 FOREGROUND PUSH → show real notification
+if (typeof window !== "undefined" && "Notification" in window) {
   onMessage(messaging, (payload) => {
-    alert("🔥 FOREGROUND MESSAGE RECEIVED");
-    console.log("PAYLOAD:", payload);
+    console.log("🔥 Foreground push received:", payload);
+
+    const title = payload.data?.title || "New Notification";
+    const body = payload.data?.body || "";
+
+    // Use service worker to show notification (reliable)
+    navigator.serviceWorker.ready.then((registration) => {
+      registration.showNotification(title, {
+        body,
+        data: { event_id: payload.data?.event_id },
+      });
+    });
   });
 }
