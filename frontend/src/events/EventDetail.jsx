@@ -155,6 +155,24 @@ export default function EventDetail() {
 
   return (
     <div style={{ padding: 20, maxWidth: 800, margin: "0 auto" }}>
+      <div
+  style={{
+    width: "100%",
+    height: "320px",
+    backgroundImage: `linear-gradient(
+        rgba(0,0,0,0.45),
+        rgba(0,0,0,0.45)
+      ), url(${event.image})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    borderRadius: "12px",
+    display: "flex",
+    alignItems: "flex-end",
+    padding: "24px",
+    color: "#fff",
+    marginBottom: "24px",
+  }}
+></div>
       <h2>{event.name}</h2>
       <p><strong>Intro:</strong> {event.intro}</p>
       <p><strong>Description:</strong> {event.description}</p>
@@ -164,6 +182,18 @@ export default function EventDetail() {
       <p><strong>Registration Open:</strong> {new Date(event.registration_open).toLocaleString()}</p>
       <p><strong>Registration Close:</strong> {new Date(event.registration_close).toLocaleString()}</p>
       <p><strong>Team Size:</strong> {event.min_team_size} - {event.max_team_size} members</p>
+
+      <h3>Rules</h3>
+
+      {Array.isArray(event.rules) && event.rules.length > 0 ? (
+        <ul>
+          {event.rules.map((rule, index) => (
+            <li key={index}>{rule}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No rules available.</p>
+      )}
       
       {event.is_registered && (
         <p style={{ color: "green", marginTop: 10 }}>
