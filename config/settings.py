@@ -129,15 +129,48 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    "default": dj_database_url.parse(
-        os.getenv("DATABASE_PUBLIC_URL")
-        if os.getenv("USE_PUBLIC_DB") == "true"
-        else os.getenv("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True,
-    )
-}
+# DATABASES = {
+#     "default": dj_database_url.parse(
+#         os.getenv("DATABASE_PUBLIC_URL")
+#         if os.getenv("USE_PUBLIC_DB") == "true"
+#         else os.getenv("DATABASE_URL"),
+#         conn_max_age=600,
+#         ssl_require=True,
+#     )
+# }
+
+USE_PUBLIC_DB = os.getenv("USE_PUBLIC_DB") == "true"
+
+DATABASE_PUBLIC_URL = os.getenv("DATABASE_PUBLIC_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if USE_PUBLIC_DB and DATABASE_PUBLIC_URL:
+    # ✅ Railway / production (public URL)
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_PUBLIC_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
+    }
+elif DATABASE_URL:
+    # ✅ Production (private/internal DB URL)
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
+    }
+else:
+    # ✅ Local development (SQLite)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -197,7 +230,16 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+
 STORAGES = {
+
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     }

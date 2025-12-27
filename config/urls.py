@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,3 +33,7 @@ urlpatterns = [
     # path('dj-rest-auth/', include('dj_rest_auth.urls')),  # optional for extra endpoints
     # path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

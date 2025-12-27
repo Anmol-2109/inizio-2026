@@ -58,6 +58,13 @@ class Profile(models.Model):
         choices=DepartmentChoices.choices, 
         default=DepartmentChoices.CSE
     )
+
+    college_name = models.CharField(
+        max_length=255,
+        null=False,
+        blank=False,
+        default='unknown college'
+    )
     
     year = models.CharField(max_length=50, blank=True)
     phone = models.CharField(max_length=20, blank=True)
