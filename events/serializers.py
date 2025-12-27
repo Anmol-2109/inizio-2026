@@ -40,6 +40,7 @@ class EventCardSerializer(serializers.ModelSerializer):
 class EventDetailSerializer(serializers.ModelSerializer):
     is_registered = serializers.SerializerMethodField()
     team_id = serializers.SerializerMethodField()
+    rules = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
@@ -65,6 +66,17 @@ class EventDetailSerializer(serializers.ModelSerializer):
         if team_member:
             return team_member.team.id
         return None
+    
+    def get_rules(self, obj):
+        """
+        ALWAYS return rules as a list
+        (prevents 500 errors from legacy data)
+        """
+        if isinstance(obj.rules, list):
+            return obj.rules
+        if isinstance(obj.rules, str):
+            return [obj.rules]
+        return []
 
 
 class TeamMemberSerializer(serializers.ModelSerializer):

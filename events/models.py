@@ -34,7 +34,7 @@ class Event(models.Model):
         null=False,
         blank=False,
         help_text="List of rules for the event",
-        default='no rule found'
+        default=["no rule found"]
     )
 
 
