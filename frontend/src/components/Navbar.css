@@ -60,10 +60,18 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  gap: 10px;
   font-family: "Playball", cursive;
   font-size: 30px;
   color: #f8f4e3;
   text-decoration: none;
+}
+
+.navbar-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
 }
 
 .nav-links {
@@ -142,6 +150,34 @@
   background: linear-gradient(90deg, #2ae3ff 0%, #ff00f5 100%);
   color: #0b1b24;
   box-shadow: 0 12px 28px rgba(86, 32, 255, 0.35);
+}
+
+.notification-icon-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 120ms ease, transform 120ms ease;
+  color: #f8f4e3;
+}
+
+.notification-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.notification-icon-btn:active {
+  transform: translateY(0);
+}
+
+.notification-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 .sidebar-overlay {
@@ -264,10 +300,29 @@
     min-width: 0;
   }
 
+  .navbar-logo-img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .navbar-logo-btn {
+    font-size: 24px;
+    gap: 8px;
+  }
+
   .navbar-actions {
     gap: 8px;
     min-width: 0;
     justify-self: end;
+  }
+
+  .notification-icon-btn {
+    padding: 6px;
+  }
+
+  .notification-icon {
+    width: 18px;
+    height: 18px;
   }
 
   .btn {
