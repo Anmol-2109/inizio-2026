@@ -8,7 +8,8 @@ import HowWeWorkSection from "../components/HowWeWorkSection";
 import SponsorsSection from "../components/SponsorsSection";
 import ContactSection from "../components/ContactSection";
 import { useNavigate } from "react-router-dom";
-
+import img from "../assets/Header_images/header.jpeg";
+import flagship_img from "../assets/Home_images/flagship.png";
 
 export default function Home() {
   const access = useAuthStore((s) => s.access);
@@ -36,11 +37,11 @@ export default function Home() {
         headline="INIZIO 2026"
         subheadline="EXPLODE YOUR IDEAS INTO REALITY"
         intro="IIITG's E-Summit, A launchpad for entrepreneurs, tech enthusiasts, and visionaries. Connect, innovate, and take your startup journey to the next level"
-        backgroundImage="https://www.figma.com/api/mcp/asset/bf81de09-836c-4017-a055-be754a2f2be1"
         primaryLabel="Events"
         primaryHref="/events"
         secondaryLabel="About"
         secondaryHref="/about"
+        backgroundImage={img}
       />
 
       <StatsSection />
@@ -52,7 +53,7 @@ export default function Home() {
         primaryHref="/events"
         secondaryLabel="Learn more"
         secondaryHref="/events"
-        imageUrl="https://www.figma.com/api/mcp/asset/a523c2d9-8a10-4c04-af8f-ca94c6d1e096"
+        imageUrl={flagship_img}
         imageAlt="Students and professionals collaborating at a futuristic hackathon event"
       />
 

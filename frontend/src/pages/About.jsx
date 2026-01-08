@@ -14,7 +14,7 @@ import event from "../assets/About_images/event.jpg"
 import mentorship from "../assets/About_images/mentorship.jpg"
 import support from "../assets/About_images/support.jpg"
 import industry from "../assets/About_images/industry.jpg"
-// 
+import img from "../assets/Header_images/header.jpeg";
 const PLACEHOLDER_IMAGE =null
 
 export default function About() {
@@ -24,11 +24,11 @@ export default function About() {
               headline="ABOUT INIZIO"
               subheadline="EXPLODE YOUR IDEAS INTO REALITY"
               intro="IIITG's E-Summit, A launchpad for entrepreneurs, tech enthusiasts, and visionaries. Connect, innovate, and take your startup journey to the next level"
-              backgroundImage="https://www.figma.com/api/mcp/asset/bf81de09-836c-4017-a055-be754a2f2be1"
               primaryLabel="Events"
               primaryHref="/events"
-              secondaryLabel="About"
-              secondaryHref="/about"
+              secondaryLabel="Teams"
+              secondaryHref="/Team"
+              backgroundImage={img}
             />  
       {/* Vision Section */}
       <section className="vision-section">
