@@ -1,6 +1,9 @@
 import { useLocation } from "react-router-dom";
 import "./Footer.css";
-
+import { FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import IIITg_logo from "../assets/logo/IIITG-logo.png"
+import IIC_logo from "../assets/logo/IIC-IIITG-logo.png"
+import IECell_logo from "../assets/logo/IE-Cell-logo.png"
 const HIDE_PATHS = new Set([
   "/register",
   "/login",
@@ -10,30 +13,25 @@ const HIDE_PATHS = new Set([
   "/reset-password",
 ]);
 
-const LOGO_SRC = "https://www.figma.com/api/mcp/asset/40dd26c1-5d3e-4244-88e7-af7ea081b135";
-const ICON_FACEBOOK = "https://www.figma.com/api/mcp/asset/865f91d7-60ef-4d2a-8d0c-f5d5dfc83af4";
-const ICON_INSTAGRAM = "https://www.figma.com/api/mcp/asset/5e842254-9820-4007-88c4-53aa8b409693";
-const ICON_LINKEDIN = "https://www.figma.com/api/mcp/asset/10762538-1677-4762-9b5f-7e14f1384189";
+
 
 const LINK_GROUPS = [
   {
     label: "Primary",
     links: [
-      { label: "Home", href: "#" },
-      { label: "About", href: "#" },
-      { label: "Events", href: "#" },
-      { label: "Team", href: "#" },
-      { label: "Connect", href: "#" },
+      { label: "Home", href: "/" },
+      { label: "About", href: "/about" },
+      { label: "Events", href: "/events" },
+      { label: "Team", href: "/team" },
     ],
   },
   {
     label: "Secondary",
     links: [
-      { label: "Login", href: "#" },
-      { label: "Register", href: "#" },
-      { label: "Dashboard", href: "#" },
-      { label: "Resources", href: "#" },
-      { label: "Guidelines", href: "#" },
+      { label: "Login", href: "/login" },
+      { label: "Register", href: "/register" },
+      { label: "Dashboard", href: "/" },
+      { label: "IIIT Guwahati", href: "https://www.iiitg.ac.in/" },
     ],
   },
 ];
@@ -49,7 +47,15 @@ export default function Footer() {
       <div className="footer__inner">
         <div className="footer__left">
           <div className="footer__logo">
-            <img src={LOGO_SRC} alt="Inizio logo" loading="lazy" />
+            <a href="https://www.iiitg.ac.in/" target="_blank" rel="noreferrer">
+                <img src={IIITg_logo} alt="IIITG Logo" />
+           </a>
+            <a href="https://www.iiitg.ac.in/" target="_blank" rel="noreferrer">
+                <img src={IECell_logo} alt="IIITG Logo" />
+           </a>
+            <a href="https://www.iiitg.ac.in/" target="_blank" rel="noreferrer">
+                <img src={IIC_logo} alt="IIITG Logo" />
+           </a>
           </div>
           <div className="footer__copy">
             <p>Get the latest news on innovation, entrepreneurship programs, and upcoming events delivered to your inbox.</p>
@@ -62,16 +68,26 @@ export default function Footer() {
             </a>
           </div>
           <div className="footer__social">
-            <a href="#" aria-label="Facebook">
-              <img src={ICON_FACEBOOK} alt="" loading="lazy" />
+
+            <a
+              href="https://www.instagram.com/inizio.iiitguwahati/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <FaInstagram />
             </a>
-            <a href="#" aria-label="Instagram">
-              <img src={ICON_INSTAGRAM} alt="" loading="lazy" />
-            </a>
-            <a href="#" aria-label="LinkedIn">
-              <img src={ICON_LINKEDIN} alt="" loading="lazy" />
+
+            <a
+              href="https://www.linkedin.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <FaLinkedinIn />
             </a>
           </div>
+
         </div>
 
         <div className="footer__links">

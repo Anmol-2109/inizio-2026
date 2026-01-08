@@ -22,10 +22,18 @@
   gap: 18px;
 }
 
-.footer__logo img {
-  height: 36px;
-  width: auto;
+.footer__logo {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* spacing between logos */
 }
+
+.footer__logo img {
+  height: 48px;     /* adjust as per design */
+  width: auto;
+  object-fit: contain;
+}
+
 
 .footer__copy {
   display: flex;
@@ -56,7 +64,7 @@
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-size: 14px;
-  color: #f8f4e3;
+  color: #ffd260;
   text-decoration: underline;
 }
 
@@ -72,8 +80,16 @@
 
 .footer__social a {
   display: inline-flex;
-  width: 24px;
-  height: 24px;
+  align-items: center;
+  justify-content: center;
+  color: inherit;      /* keeps same color */
+  font-size: 20px;     /* same size as before */
+  text-decoration: none;
+  color:#ffd260;
+}
+
+.footer__social a:hover {
+  opacity: 0.8;        /* subtle hover, same design feel */
 }
 
 .footer__social img {
