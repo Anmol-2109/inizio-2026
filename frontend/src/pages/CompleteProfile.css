@@ -1,0 +1,237 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400&display=swap'); */
+
+.profile-page {
+  min-height: 100vh;
+  background: rgba(4, 30, 40, 0.95);
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Loading Container */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: white;
+  font-size: 20px;
+}
+
+/* Form Container */
+.profile-form-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px 60px;
+  margin-top: 0;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-form-card {
+  background: linear-gradient(180deg, rgba(137, 179, 216, 0.15) 0%, rgba(137, 179, 216, 0.08) 100%);
+  border: 1px solid rgba(137, 179, 216, 0.3);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 750px;
+  backdrop-filter: blur(10px);
+}
+
+.form-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: white;
+  opacity: 0.74;
+  margin: 0 0 30px 0;
+  line-height: 1.75;
+}
+
+/* Error Message */
+.error-message {
+  background-color: rgba(220, 53, 69, 0.2);
+  border: 1px solid rgba(220, 53, 69, 0.5);
+  color: #ff6b6b;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: white;
+  opacity: 0.6;
+  margin-bottom: 10px;
+  line-height: 1.75;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(137, 179, 216, 0.4);
+  border: none;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-select {
+  cursor: pointer;
+}
+
+.form-select option {
+  background: rgba(4, 30, 40, 0.95);
+  color: white;
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-input:focus,
+.form-select:focus {
+  background: rgba(137, 179, 216, 0.5);
+  box-shadow: 0 0 0 2px rgba(137, 179, 216, 0.3);
+}
+
+.form-input:disabled,
+.form-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Save Button */
+.save-btn {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #a600ff 0%, #8800cc 100%);
+  border: none;
+  border-radius: 15px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 25px;
+  box-shadow: 0 55px 100px rgba(0, 0, 0, 0.25);
+}
+
+.save-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #b800ff 0%, #9900dd 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 60px 110px rgba(0, 0, 0, 0.3);
+}
+
+.save-btn:disabled {
+  background: linear-gradient(135deg, #666 0%, #555 100%);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Styles */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .profile-form-card {
+    padding: 30px;
+    max-width: 600px;
+  }
+
+  .form-title {
+    font-size: 30px;
+  }
+
+  .form-label {
+    font-size: 18px;
+  }
+
+  .form-input,
+  .form-select {
+    padding: 14px 18px;
+    font-size: 16px;
+  }
+
+  .save-btn {
+    font-size: 20px;
+    padding: 16px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .profile-form-container {
+    padding: 30px 15px 40px;
+    margin-top: 0;
+  }
+
+  .profile-form-card {
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .form-title {
+    font-size: 26px;
+    margin-bottom: 25px;
+  }
+
+  .form-label {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .form-input,
+  .form-select {
+    padding: 14px 16px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  .save-btn {
+    font-size: 18px;
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 20px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 400px) {
+  .profile-form-card {
+    padding: 20px 15px;
+  }
+
+  .form-title {
+    font-size: 22px;
+  }
+
+  .form-input,
+  .form-select {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .save-btn {
+    font-size: 16px;
+    padding: 14px;
+  }
+}
