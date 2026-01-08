@@ -1,13 +1,18 @@
 import FeatureCard from "./FeatureCard";
 import "./HowWeWorkSection.css";
 
+import work_im1 from "../assets/Home_images/work_im1.png"
+import work_im2 from "../assets/Home_images/work_im2.png"
+import work_im3 from "../assets/Home_images/work_im3.png"
+import work_im4 from "../assets/Home_images/work_im4.png"
+
 const CARD_DATA = [
   {
     tag: "Learn",
     title: "Workshops that teach real skills",
     description: "Explore",
     imageUrl:
-      "https://www.figma.com/api/mcp/asset/40159853-bab4-4b98-b8f2-d6441f1ba255",
+      work_im1,
     imageAlt: "People in a workshop setting collaborating around a table",
   },
   {
@@ -15,7 +20,7 @@ const CARD_DATA = [
     title: "Hackathons where ideas become products",
     description: "Compete",
     imageUrl:
-      "https://www.figma.com/api/mcp/asset/4cf956f3-3ff1-4d16-b84b-c01a9c2d644d",
+      work_im2,
     imageAlt: "Hackathon participants working on laptops in a dark venue",
   },
   {
@@ -23,7 +28,7 @@ const CARD_DATA = [
     title: "Mentorship from those who’ve built it",
     description: "Learn",
     imageUrl:
-      "https://www.figma.com/api/mcp/asset/15872f3d-73fa-4eb9-a103-7940ee304361",
+      work_im3,
     imageAlt: "Mentors and students networking outdoors",
   },
   {
@@ -31,7 +36,7 @@ const CARD_DATA = [
     title: "Networking with founders and investors",
     description: "Grow",
     imageUrl:
-      "https://www.figma.com/api/mcp/asset/4f2101e9-2401-430f-8b00-313148000e77",
+      work_im4,
     imageAlt: "Group of professionals networking at an event",
   },
 ];

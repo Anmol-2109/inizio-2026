@@ -6,6 +6,12 @@
   padding: clamp(48px, 8vw, 112px) clamp(20px, 6vw, 64px);
 }
 
+.contact__icon-svg {
+  font-size: 28px;
+  color: #ffd260; /* change as needed */
+}
+
+
 .contact__inner {
   width: min(1280px, 100%);
   display: flex;

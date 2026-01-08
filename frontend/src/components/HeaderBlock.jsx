@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import "./HeaderBlock.css";
 
-const DEFAULT_HEADER_BG =
-  "https://www.figma.com/api/mcp/asset/bf81de09-836c-4017-a055-be754a2f2be1";
+import image from "../assets/Header_images/header.jpeg"
+
+// const DEFAULT_HEADER_BG = img
+  
 
 /**
  * Reusable header/hero block styled after the provided Figma header.
@@ -18,11 +20,11 @@ export default function HeaderBlock({
   primaryHref = "#events",
   secondaryLabel = "About",
   secondaryHref = "#about",
-  backgroundImage,
+  backgroundImage = image,
   backgroundAlt = "Founders collaborating around a table with a glowing bulb",
   showTopActions = false,
 }) {
-  const bgSource = backgroundImage || DEFAULT_HEADER_BG;
+  const bgSource = backgroundImage;
 
   return (
     <header className="header-block">
