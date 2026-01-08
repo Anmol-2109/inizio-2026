@@ -70,7 +70,7 @@ def send_otp_email(self, email, subject, message):
     Send OTP email using Resend (Railway compatible)
     """
     resend.Emails.send({
-        "from": "INIZIO <onboarding@resend.dev>",
+        "from": "INIZIO <no-reply@inizio.org.in>",
         "to": [email],
         "subject": subject,
         "html": f"<p>{message}</p>",
