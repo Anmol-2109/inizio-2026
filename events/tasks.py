@@ -47,7 +47,7 @@ def send_event_invite_email(self, email, subject, message):
             "from": "INIZIO <no-reply@inizio.org.in>",
             "to": [email],
             "subject": subject,
-            "html": f"<p>{message}</p>",
+            "html": f"<p>{"This is regarding sent invitation"}</p>",
         })
     except Exception as e:
         # log but don't re-raise unless you want retries
