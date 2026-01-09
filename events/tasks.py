@@ -3,6 +3,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
+import resend
+resend.api_key = settings.RESEND_API_KEY
 
 from .models import (
     Event,
@@ -16,6 +18,21 @@ from .firebase import send_push_notification
 from .utils import notify_user
 
 
+@shared_task(
+    bind=True,
+    autoretry_for=(Exception,),
+    retry_kwargs={"max_retries": 3, "countdown": 5},
+)
+def send_resend_email(self, email, subject, message):
+    """
+    Generic Resend email sender (INIZIO account)
+    """
+    resend.Emails.send({
+        "from": "INIZIO <no-reply@inizio.org.in>",
+        "to": [email],
+        "subject": subject,
+        "html": f"<p>{message}</p>",
+    })
 # ==========================================================
 # 1️⃣ INVITE EMAIL TASK (FIX 11)
 # ==========================================================
@@ -25,13 +42,7 @@ def send_event_invite_email(self, email, subject, message):
     Sends invite email safely with retries.
     No prints. No logic here.
     """
-    send_mail(
-        subject,
-        message,
-        settings.DEFAULT_FROM_EMAIL,
-        [email],
-        fail_silently=False,
-    )
+    send_resend_email.delay(email, subject, message)
 
 
 # ==========================================================
@@ -139,13 +150,8 @@ def process_event_reminder(event_id, message, send_email=False):
 # ==========================================================
 @shared_task(bind=True, autoretry_for=(Exception,), retry_kwargs={"max_retries": 3})
 def send_event_reminder_email(self, email, event_name, message):
-    send_mail(
-        subject=f"[Reminder] {event_name}",
-        message=message,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[email],
-        fail_silently=False,
-    )
+    subject = f"[Reminder] {event_name}"
+    send_resend_email.delay(email, subject, message)
 
 
 # ==========================================================
