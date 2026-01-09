@@ -36,18 +36,23 @@ def send_resend_email(self, email, subject, message):
 # ==========================================================
 # 1️⃣ INVITE EMAIL TASK (FIX 11)
 # ==========================================================
-shared_task(
+@shared_task(
     bind=True,
     autoretry_for=(Exception,),
     retry_kwargs={"max_retries": 3, "countdown": 5},
 )
 def send_event_invite_email(self, email, subject, message):
-    resend.Emails.send({
-        "from": "INIZIO <no-reply@inizio.org.in>",
-        "to": [email],
-        "subject": subject,
-        "html": f"<p>{message}</p>",
-    })
+    try:
+        resend.Emails.send({
+            "from": "INIZIO <no-reply@inizio.org.in>",
+            "to": [email],
+            "subject": subject,
+            "html": f"<p>{message}</p>",
+        })
+    except Exception as e:
+        # log but don't re-raise unless you want retries
+        raise self.retry(exc=e)
+
 
 # ==========================================================
 # 2️⃣ EXPIRE OLD INVITES
