@@ -39,7 +39,7 @@ export default function ContactSection() {
               <div className="contact__item-text">
                 <p className="contact__item-label">Phone</p>
                 <div className="contact__item-multi">
-                  <a className="contact__item-link" href="tel:+9118018685525">
+                  <a className="contact__item-link" href="tel:+918018685525">
                     +91 18018685525
                   </a>
                   <a className="contact__item-link" href="tel:+917631648529">
