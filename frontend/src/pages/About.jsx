@@ -14,7 +14,8 @@ import event from "../assets/About_images/event.jpg"
 import mentorship from "../assets/About_images/mentorship.jpg"
 import support from "../assets/About_images/support.jpg"
 import industry from "../assets/About_images/industry.jpg"
-import img from "../assets/Header_images/header.jpeg";
+// import img from "../assets/Header_images/header.jpeg";
+import img from "../assets/About_images/header.jpg";
 const PLACEHOLDER_IMAGE =null
 
 export default function About() {
@@ -210,26 +211,11 @@ export default function About() {
             </div>
           </div>
 
-          <div className="timeline-nav">
-            <button className="nav-btn">←</button>
-            <button className="nav-btn">→</button>
-          </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="cta-section">
-        <div className="container">
-          <div className="cta-card">
-            <h2>Join our community</h2>
-            <p>Be part of something that matters. Start your journey with us today.</p>
-            <div className="cta-actions">
-              <button className="btn-primary">Events</button>
-              <button className="btn-outline light">Login</button>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </div>
   );
 }

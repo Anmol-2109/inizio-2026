@@ -26,15 +26,7 @@ export default function NotificationCard({
 
   return (
     <div className="notification-card">
-      <div
-        className="notification-card-accent"
-        style={{ backgroundColor: accentColor }}
-      >
-        <span
-          className="notification-card-accent-shadow"
-          style={{ backgroundColor: accentColor }}
-        />
-      </div>
+      
 
       <div className="notification-card-body">
         <div className="notification-card-header">

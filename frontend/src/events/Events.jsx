@@ -88,6 +88,7 @@ import { Link } from "react-router-dom";
 import api from "../api/apiClient";
 import "./Events.css";
 import EventCard from "../components/EventCard";
+import img from "../assets/Event_page/event_header.jpg";
 
 function formatDateTime(dateString) {
   if (!dateString) return "TBA";
@@ -162,7 +163,8 @@ export default function Events() {
 
   return (
     <div className="events-page">
-      <section className="events-hero">
+      <section className="events-hero" style={{backgroundImage:`url(${img})`}}>
+        {/* style={{ backgroundImage: url({img}) }} */}
         <div className="events-hero-overlay" />
         <div className="events-hero-content">
           <h1 className="events-hero-title">Events that matter</h1>

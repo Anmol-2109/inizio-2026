@@ -8,6 +8,7 @@
     sans-serif;
 }
 
+
 .events-hero {
   position: relative;
   padding: 112px 24px;
@@ -15,18 +16,13 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-image: radial-gradient(
-      circle at 0% 0%,
-      rgba(255, 255, 255, 0.1),
-      transparent 55%
-    ),
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(148, 163, 184, 0.12),
-      transparent 55%
-    ),
-    linear-gradient(180deg, #020617 0%, #020617 55%, #041e28 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   overflow: hidden;
+   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 
+              0 10px 30px rgba(0, 0, 0, 0.3),
+              inset 0 -40px 80px rgba(0, 0, 0, 0.4);
 }
 
 .events-hero-overlay {
