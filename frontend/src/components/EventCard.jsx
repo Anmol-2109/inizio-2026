@@ -18,7 +18,7 @@ export default function EventCard({
     <Link to={`/events/${id}`} className="event-card">
       <div
         className="event-card-image"
-        style={{ backgroundImage: `url(${cardImage})` }}
+        style={{ backgroundImage: `url(${image})` }}
       />
 
       <div className="event-card-content">

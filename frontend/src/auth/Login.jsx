@@ -127,7 +127,7 @@ export default function Login() {
 
             <div className="field-wrapper">
               <label className="field-label" htmlFor="email">
-                Student Email / id
+                Email / id
               </label>
               <div className="input-gradient">
                 <input

@@ -498,9 +498,9 @@ export default function RegisterTeam() {
   return (
     <div className="register-page">
       {/* Header Section */}
-      <div className="register-header">
+      {/* <div className="register-header">
         <TeamHeader name = {event.name} date = {'TBA'} venue = {'TBA'} teamSize={event.min_team_size+'-'+event.max_team_size} description={event.intro} backgroundImage={img1}/>
-      </div>
+      </div> */}
 
       {/* Form Section */}
       <div className="register-form-container">

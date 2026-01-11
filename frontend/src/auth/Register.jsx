@@ -97,7 +97,7 @@ export default function Register() {
 
             <div className="field-wrapper full-row">
               <label className="field-label" htmlFor="email">
-                College Email
+                Email
               </label>
               <div className="input-gradient">
                 <input
