@@ -5,6 +5,7 @@ from datetime import timedelta
 import random
 import uuid
 from django.contrib.auth.hashers import make_password
+import re
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -22,6 +23,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         if user and user.is_active:
             raise serializers.ValidationError("This email is already registered & verified.")
         return value
+    
+    def validate_full_name(self, value):
+        value = value.strip()
+        if len(value) < 3:
+            raise serializers.ValidationError("Name too short.")
+        if len(value) > 100:
+            raise serializers.ValidationError("Name too long.")
+        return value
+
 
     def create(self, validated_data):
         email = validated_data['email']
@@ -137,13 +147,72 @@ class LoginSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    full_name = serializers.CharField(source="user.full_name", required=True)
+    full_name = serializers.CharField(source="user.full_name", required=True,min_length=3,max_length=100)
     email = serializers.EmailField(source="user.email", read_only=True)
     is_staff = serializers.BooleanField(source="user.is_staff", read_only=True)
     
     class Meta:
         model = Profile
-        fields = ["full_name", "email", "department", "year", "phone", "is_staff"]
+        fields = ["full_name", "email", "department", "year","college_name", "phone", "is_staff"]
+
+    def validate_full_name(self, value):
+        value = value.strip()
+
+        if not re.match(r"^[A-Za-z ]+$", value):
+            raise serializers.ValidationError(
+                "Name can contain only letters and spaces."
+            )
+
+        if re.search(r"(.)\1{2,}", value):
+            raise serializers.ValidationError(
+                "Name contains too many repeated characters."
+            )
+
+        return value
+
+    def validate_college_name(self, value):
+        value = value.strip()
+        if len(value) < 3:
+            raise serializers.ValidationError("College name is too short.")
+        if len(value) > 150:
+            raise serializers.ValidationError("College name is too long.")
+        return value
+    
+    def validate_phone(self, value):
+        value = value.strip()
+        if not re.fullmatch(r"[6-9]\d{9}", value):
+            raise serializers.ValidationError(
+                "Phone number must be a valid 10-digit Indian number."
+            )
+        return value
+    
+    def validate_year(self, value):
+       value = value.strip()
+
+       allowed = {
+        "1st year",
+        "2nd year",
+        "3rd year",
+        "4th year",
+        "5th year",
+    }
+
+       if value.lower() not in allowed:
+           raise serializers.ValidationError(
+            "Year must be one of: 1st Year, 2nd Year, 3rd Year, 4th Year, 5th Year."
+        )
+
+       return value
+    
+    def validate(self, attrs):
+        """
+        Global sanity check to block obvious spam patterns
+        """
+        full_name = attrs.get("user", {}).get("full_name", "")
+        if re.search(r"(.)\1{5,}", full_name):
+            raise serializers.ValidationError("Invalid name format.")
+
+        return attrs
 
     def update(self, instance, validated_data):
         user_data = validated_data.pop("user", {})
