@@ -191,6 +191,7 @@ export default function CompleteProfile() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     full_name: "",
+    college_name: "",
     department: "CSE",
     year: "",
     phone: ""
@@ -208,6 +209,7 @@ export default function CompleteProfile() {
         if (res.data) {
           setFormData({
             full_name: res.data.full_name || "",
+            college_name: res.data.college_name || "",
             department: res.data.department || "CSE",
             year: res.data.year || "",
             phone: res.data.phone || ""
@@ -226,7 +228,7 @@ export default function CompleteProfile() {
         }
       } catch (error) {
         // Profile might not exist yet, that's okay
-        console.log("Profile not found, will create new one");
+        
       }
     };
     
@@ -235,20 +237,34 @@ export default function CompleteProfile() {
 
   const submit = async () => {
     // Validate all required fields
-    if (!formData.full_name || formData.full_name.trim() === "") {
-      setError("Full name is required");
-      return;
-    }
+    const name = formData.full_name.trim();
+
+if (name.length < 3) {
+  setError("Full name must be at least 3 characters.");
+  return;
+}
+
+if (name.length >20) {
+  setError("Full name is too long.");
+  return;
+}
+
+if (!/^[A-Za-z ]+$/.test(name)) {
+  setError("Name can contain only letters and spaces.");
+  return;
+}
+
 
     if (!formData.department || formData.department.trim() === "") {
       setError("Department is required");
       return;
     }
 
-    if (!formData.year || formData.year.trim() === "") {
-      setError("Year is required");
-      return;
-    }
+  if (!formData.year) {
+  setError("Year is required.");
+  return;
+}
+
 
     if (!formData.phone || formData.phone.trim() === "") {
       setError("Phone number is required");
@@ -256,16 +272,30 @@ export default function CompleteProfile() {
     }
 
     // Validate phone number format (basic validation)
-    const phoneRegex = /^[0-9]{10}$/;
-    if (!phoneRegex.test(formData.phone.trim())) {
-      setError("Please enter a valid 10-digit phone number");
-      return;
-    }
+    const phoneRegex = /^[6-9]\d{9}$/;
+
+if (!phoneRegex.test(formData.phone.trim())) {
+  setError("Enter a valid 10-digit Indian phone number.");
+  return;
+}
+
+const college = formData.college_name.trim();
+
+if (college.length < 3) {
+  setError("College name must be at least 3 characters.");
+  return;
+}
+
+if (college.length > 150) {
+  setError("College name is too long.");
+  return;
+}
+
 
     try {
       // Ensure we have a token before making the request
       if (!access) {
-        console.error("No access token found. Please login again.");
+        
         navigate("/login");
         return;
       }
@@ -276,6 +306,7 @@ export default function CompleteProfile() {
       // Backend expects: full_name, department, year, phone
       const res = await api.put("/auth/profile/", {
         full_name: formData.full_name.trim(),
+         college_name: formData.college_name.trim(),
         department: formData.department,
         year: formData.year.trim(),
         phone: formData.phone.trim()
@@ -285,19 +316,43 @@ export default function CompleteProfile() {
       const { isStaff } = useAuthStore.getState();
       setAuth({ access, refresh, profileComplete: true, isStaff: isStaff || false });
       navigate("/profile");
-    } catch (error) {
-      console.error("Profile update error:", error);
-      const errorMessage = error.response?.data?.full_name?.[0] || 
-                          error.response?.data?.detail || 
-                          error.response?.data?.error || 
-                          "Failed to update profile. Please try again.";
-      setError(errorMessage);
-      
-      // If 401, redirect to login
-      if (error.response?.status === 401) {
-        navigate("/login");
-      }
-    } finally {
+    } 
+    
+   catch (error) {
+  // 🔍 FULL backend response (THIS IS THE KEY)
+  
+
+  let errorMessage = "Failed to update profile. Please try again.";
+
+  if (error.response?.data) {
+    // Handle DRF field-wise errors
+    const data = error.response.data;
+
+    if (typeof data === "string") {
+      errorMessage = data;
+    } else if (data.full_name) {
+      errorMessage = data.full_name[0];
+    } else if (data.college_name) {
+      errorMessage = data.college_name[0];
+    } else if (data.year) {
+      errorMessage = data.year[0];
+    } else if (data.phone) {
+      errorMessage = data.phone[0];
+    } else if (data.detail) {
+      errorMessage = data.detail;
+    } else {
+      // fallback: stringify unknown error
+      errorMessage = JSON.stringify(data);
+    }
+  }
+
+  setError(errorMessage);
+
+  if (error.response?.status === 401) {
+    navigate("/login");
+  }
+}
+finally {
       setLoading(false);
     }
   };
@@ -351,18 +406,24 @@ export default function CompleteProfile() {
           {/* Year */}
           <div className="form-group">
             <label className="form-label">Year *</label>
-            <input
-              type="text"
-              className="form-input"
-              placeholder="e.g., 1st Year, 2nd Year, 3rd Year, 4th Year"
-              value={formData.year}
-              onChange={(e) => {
-                setFormData({ ...formData, year: e.target.value });
-                setError("");
-              }}
-              disabled={loading}
-              required
-            />
+            <select
+  className="form-select"
+  value={formData.year}
+  onChange={(e) => {
+    setFormData({ ...formData, year: e.target.value });
+    setError("");
+  }}
+  disabled={loading}
+  required
+>
+  <option value="">Select Year</option>
+  <option value="1st Year">1st Year</option>
+  <option value="2nd Year">2nd Year</option>
+  <option value="3rd Year">3rd Year</option>
+  <option value="4th Year">4th Year</option>
+  <option value="5th Year">5th Year</option>
+</select>
+
           </div>
 
           {/* Phone */}
@@ -382,6 +443,22 @@ export default function CompleteProfile() {
               required
             />
           </div>
+
+          <div className="form-group">
+  <label className="form-label">College Name *</label>
+  <input
+    type="text"
+    className="form-input"
+    placeholder="Enter your college name"
+    value={formData.college_name}
+    onChange={(e) => {
+      setFormData({ ...formData, college_name: e.target.value });
+      setError("");
+    }}
+    disabled={loading}
+    required
+  />
+</div>
 
           {/* Save Button */}
           <button

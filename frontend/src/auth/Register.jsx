@@ -15,41 +15,66 @@ export default function Register() {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    if (!data.name || !data.email || !data.password || !data.confirmPassword) {
-      setError("Please fill out all fields.");
-      return;
-    }
+  if (
+    !data.full_name.trim() ||
+    !data.email.trim() ||
+    !data.password ||
+    !data.confirmPassword
+  ) {
+    setError("Please fill out all fields.");
+    return;
+  }
 
-    if (data.password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return;
-    }
+  // ✅ Full name validation
+  if (data.full_name.trim().length < 3) {
+    setError("Full name must be at least 3 characters.");
+    return;
+  }
 
-    if (data.password !== data.confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
+  if (data.full_name.length > 100) {
+    setError("Full name is too long.");
+    return;
+  }
 
-    setError("");
-    setLoading(true);
+  // ❌ Block spam patterns like aaaaaaa / 000000
+  if (/(.)\1{5,}/.test(data.full_name)) {
+    setError("Invalid name format.");
+    return;
+  }
 
-    try {
-      await api.post("/auth/register/", {
-        full_name: data.name,
-        email: data.email,
-        password: data.password
-      });
-      navigate(`/verify-otp?email=${encodeURIComponent(data.email)}`);
-    } catch (err) {
-      const message =
-        err.response?.data?.detail ||
-        err.response?.data?.error ||
-        "Registration failed. Please try again.";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Password rules
+  if (data.password.length < 6) {
+    setError("Password must be at least 6 characters.");
+    return;
+  }
+
+  if (data.password !== data.confirmPassword) {
+    setError("Passwords do not match.");
+    return;
+  }
+
+  setError("");
+  setLoading(true);
+
+  try {
+    await api.post("/auth/register/", {
+      full_name: data.full_name.trim(),
+      email: data.email.trim(),
+      password: data.password
+    });
+
+    navigate(`/verify-otp?email=${encodeURIComponent(data.email)}`);
+  } catch (err) {
+    const message =
+      err.response?.data?.detail ||
+      err.response?.data?.error ||
+      "Registration failed. Please try again.";
+    setError(message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const onKeyDown = (event) => {
     if (event.key === "Enter" && !loading) {
@@ -88,7 +113,7 @@ export default function Register() {
                   id="name"
                   className="input-field"
                   placeholder="John Doe"
-                  value={data.name}
+                  value={data.full_name}
                   onChange={(e) => setData({ ...data, name: e.target.value })}
                   onKeyDown={onKeyDown}
                 />
