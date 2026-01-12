@@ -15,7 +15,6 @@ export default function ForgotPassword() {
       setError("Please enter a valid email address.");
       return;
     }
-
     setLoading(true);
     setError("");
     setSuccess(false);
@@ -27,7 +26,6 @@ export default function ForgotPassword() {
         navigate(`/verify-reset-otp?email=${encodeURIComponent(email)}`);
       }, 1200);
     } catch (error) {
-      console.error("Forgot password error:", error);
       setError(
         error.response?.data?.detail ||
         error.response?.data?.error ||

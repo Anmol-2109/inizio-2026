@@ -26,12 +26,12 @@ export default function EventDetail() {
     try {
       setLoading(true);
       const res = await api.get(`/events/${id}/`);
-      console.log("Event detail response:", res.data);
+     
       setEvent(res.data);
       
       // Backend now returns team_id in the response if user is registered
       if (res.data.team_id) {
-        console.log("✅ Team ID from backend:", res.data.team_id);
+        
         const teamIdStr = res.data.team_id.toString();
         setUserTeamId(teamIdStr);
         
@@ -41,12 +41,12 @@ export default function EventDetail() {
         teamsMap[id] = teamIdStr;
         localStorage.setItem("user_teams", JSON.stringify(teamsMap));
       } else if (res.data.is_registered && access) {
-        console.log("⚠️ User is registered but team_id not in response. Checking localStorage...");
+       
         // Fallback: try to get from localStorage if backend doesn't return it
         fetchUserTeam();
       }
     } catch (error) {
-      console.error("Error fetching event:", error);
+      
       setError(error.response?.data?.detail || "Failed to load event");
     } finally {
       setLoading(false);
@@ -67,14 +67,14 @@ export default function EventDetail() {
       }
       
       if (storedTeamId) {
-        console.log("Found team ID from localStorage:", storedTeamId);
+       
         setUserTeamId(storedTeamId);
         return;
       }
 
-      console.log("Team ID not found in localStorage for event:", id);
+      
     } catch (error) {
-      console.error("Error fetching team:", error);
+      
     }
   };
 
@@ -92,37 +92,33 @@ export default function EventDetail() {
       return;
     }
 
-    console.log("View Team clicked. Event data:", event);
-    console.log("User team ID from state:", userTeamId);
+   
 
     // Try to get team ID from multiple sources
     // Priority: 1. From event response (team_id), 2. From state, 3. From localStorage
     let teamId = event?.team_id || userTeamId || localStorage.getItem(`team_${id}`);
     
-    console.log("Team ID from event.team_id:", event?.team_id);
-    console.log("Team ID from userTeamId:", userTeamId);
-    console.log("Team ID from localStorage:", localStorage.getItem(`team_${id}`));
     
     // Also check the teams map
     if (!teamId) {
       const teamsMap = JSON.parse(localStorage.getItem("user_teams") || "{}");
       teamId = teamsMap[id] || teamsMap[event?.id];
-      console.log("Team ID from teamsMap:", teamId);
+
     }
 
     if (teamId) {
-      console.log("✅ Found team ID, navigating to:", `/events/team/${teamId}`);
+      
       navigate(`/events/team/${teamId}`);
     } else {
       // If we still don't have team ID, refresh the event to get it from backend
-      console.error("❌ Team ID not found. Event ID:", id, "User registered:", event?.is_registered);
+     
       console.log("Full event data:", event);
       
       // Try refreshing the event data to get team_id from backend
       try {
-        console.log("Refreshing event to get team_id...");
+        
         const res = await api.get(`/events/${id}/`);
-        console.log("Refreshed event response:", res.data);
+        
         if (res.data.team_id) {
           console.log("✅ Got team ID after refresh:", res.data.team_id);
           setEvent(res.data);

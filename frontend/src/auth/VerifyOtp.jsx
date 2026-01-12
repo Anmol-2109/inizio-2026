@@ -48,7 +48,6 @@ export default function VerifyOtp() {
       navigate("/login", { replace: true });
     }
     } catch (error) {
-      console.error("OTP verification error:", error);
       setError(
         error.response?.data?.detail ||
         error.response?.data?.error ||
@@ -71,7 +70,6 @@ export default function VerifyOtp() {
       setResent(true);
       setTimeout(() => setResent(false), 2000);
     } catch (error) {
-      console.error("Resend OTP error:", error);
       setError(error.response?.data?.error || "Failed to resend OTP. Please try again.");
     }
   };

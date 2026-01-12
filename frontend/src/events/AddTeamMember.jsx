@@ -121,7 +121,7 @@ export default function AddTeamMember() {
       alert("Member added successfully! Invite sent.");
       navigate(`/events/team/${team_id}`);
     } catch (error) {
-      console.error("Add member error:", error);
+      
       setError(error.response?.data?.error || "Failed to add member");
     } finally {
       setLoading(false);

@@ -2,7 +2,6 @@ import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import api from "../api/apiClient";
 import "./AuthShared.css";
-
 export default function VerifyResetOtp() {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
@@ -35,7 +34,7 @@ export default function VerifyResetOtp() {
         navigate(`/reset-password?email=${encodeURIComponent(email)}`);
       }
     } catch (error) {
-      console.error("Reset OTP verification error:", error);
+      
       setError(
         error.response?.data?.detail || 
         error.response?.data?.error || 
@@ -58,7 +57,7 @@ export default function VerifyResetOtp() {
       setResent(true);
       setTimeout(() => setResent(false), 2000);
     } catch (error) {
-      console.error("Resend OTP error:", error);
+      
       setError(error.response?.data?.error || "Failed to resend OTP. Please try again.");
     }
   };

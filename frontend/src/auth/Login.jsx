@@ -52,8 +52,6 @@ export default function Login() {
       //   navigate("/complete-profile");
       // }
     } catch (error) {
-      console.error("Login error:", error);
-      console.error("Error response:", error.response?.data);
 
       // Handle different error response formats from DRF
       let errorMessage = "Invalid email or password. Please try again.";

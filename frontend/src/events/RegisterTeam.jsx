@@ -435,7 +435,6 @@ export default function RegisterTeam() {
         members: uniqueMembers
       });
       
-      console.log("Registration response:", res.data);
       
       const teamId = res.data?.id;
       
@@ -458,8 +457,7 @@ export default function RegisterTeam() {
       }
       localStorage.setItem("user_teams", JSON.stringify(teamsMap));
       
-      console.log("Stored team ID:", teamId, "for event:", event_id);
-      console.log("Navigating to team:", `/events/team/${teamId}`);
+      
       
       navigate(`/events/team/${teamId}`, { replace: true });
     } catch (error) {
@@ -501,7 +499,6 @@ export default function RegisterTeam() {
       {/* <div className="register-header">
         <TeamHeader name = {event.name} date = {'TBA'} venue = {'TBA'} teamSize={event.min_team_size+'-'+event.max_team_size} description={event.intro} backgroundImage={img1}/>
       </div> */}
-
       {/* Form Section */}
       <div className="register-form-container">
         <div className="register-form-card">
