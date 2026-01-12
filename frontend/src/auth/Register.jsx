@@ -113,7 +113,7 @@ export default function Register() {
                   id="name"
                   className="input-field"
                   placeholder="John Doe"
-                  value={data.full_name}
+                  value={data.name}
                   onChange={(e) => setData({ ...data, name: e.target.value })}
                   onKeyDown={onKeyDown}
                 />
