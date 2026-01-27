@@ -4,7 +4,7 @@ from django.db import transaction
 from datetime import timedelta
 from django.conf import settings
 
-from .models import Event, EventTeam, EventTeamMember, EventInviteToken , DeviceToken ,Notification
+from .models import Event, EventTeam, EventTeamMember, EventInviteToken , DeviceToken ,Notification,EventInfoField
 from accounts.models import User
 
 from rest_framework import generics, status
@@ -38,11 +38,22 @@ class EventCardSerializer(serializers.ModelSerializer):
         ).exists()
 
 
+class EventInfoFieldSerializer(serializers.ModelSerializer):
+    value = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EventInfoField
+        fields = ["key", "label", "field_type", "value"]
+
+    def get_value(self, obj):
+        return obj.get_value()
+
+
 class EventDetailSerializer(serializers.ModelSerializer):
     is_registered = serializers.SerializerMethodField()
     team_id = serializers.SerializerMethodField()
     rules = serializers.SerializerMethodField()
-
+    info_fields = EventInfoFieldSerializer(many=True, read_only=True)
     class Meta:
         model = Event
         fields = "__all__"
@@ -250,3 +261,4 @@ class EventCustomFieldSerializer(serializers.ModelSerializer):
 
 class EventSubmissionSerializer(serializers.Serializer):
     responses = serializers.DictField()
+

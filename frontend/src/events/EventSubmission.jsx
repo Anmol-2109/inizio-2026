@@ -16,6 +16,7 @@ export default function EventSubmission() {
   const [success, setSuccess] = useState("");
   const [responses, setResponses] = useState({});
   const [isDirty, setIsDirty] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState({});
 
   useEffect(() => {
     if (!access) {
@@ -50,6 +51,29 @@ export default function EventSubmission() {
       [name]: value,
     }));
     setIsDirty(true);
+  };
+
+  const handleFileUpload = async (fieldName, file) => {
+    if (!file) return;
+
+    setUploadingFiles((prev) => ({ ...prev, [fieldName]: true }));
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await api.post("/events/upload-file/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      handleChange(fieldName, res.data.url);
+    } catch (err) {
+      setError(err.response?.data?.error || "Failed to upload file");
+    } finally {
+      setUploadingFiles((prev) => ({ ...prev, [fieldName]: false }));
+    }
   };
 
   useEffect(() => {
@@ -158,24 +182,69 @@ export default function EventSubmission() {
                   disabled={submitting}
                   placeholder={`Enter ${field.label}`}
                 />
+              ) : field.field_type === "file" ? (
+                <div>
+                  <input
+                    type="file"
+                    id={`file-${field.name}`}
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        handleFileUpload(field.name, file);
+                      }
+                    }}
+                    disabled={submitting || uploadingFiles[field.name]}
+                  />
+                  <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                    <button
+                      type="button"
+                      onClick={() => document.getElementById(`file-${field.name}`)?.click()}
+                      disabled={submitting || uploadingFiles[field.name]}
+                      style={{
+                        padding: "8px 16px",
+                        backgroundColor: uploadingFiles[field.name] ? "#ccc" : "#007bff",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: uploadingFiles[field.name] ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      {uploadingFiles[field.name] ? "Uploading..." : "Choose File"}
+                    </button>
+                    {responses[field.name] && (
+                      <span style={{ fontSize: "14px", color: "#28a745" }}>
+                        ✓ File uploaded
+                      </span>
+                    )}
+                  </div>
+                  {responses[field.name] && (
+                    <div style={{ marginTop: "8px" }}>
+                      <a
+                        href={responses[field.name]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "#007bff", textDecoration: "underline", fontSize: "14px" }}
+                      >
+                        View uploaded file
+                      </a>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <input
                   className="form-input"
                   type={
                     field.field_type === "number"
                       ? "number"
-                      : field.field_type === "url" || field.field_type === "file"
-                      ? "text"
+                      : field.field_type === "url"
+                      ? "url"
                       : "text"
                   }
                   value={responses[field.name] || ""}
                   onChange={(e) => handleChange(field.name, e.target.value)}
                   disabled={submitting}
-                  placeholder={
-                    field.field_type === "file"
-                      ? "Paste file URL or reference"
-                      : `Enter ${field.label}`
-                  }
+                  placeholder={`Enter ${field.label}`}
                 />
               )}
             </div>

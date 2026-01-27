@@ -158,7 +158,15 @@ export default function EventDetail() {
     backgroundImage: `linear-gradient(
         rgba(0,0,0,0.45),
         rgba(0,0,0,0.45)
-      ), url(${event.image})`,
+      ), url(${(() => {
+        if (!event.image) return "";
+        if (event.image.startsWith("http://") || event.image.startsWith("https://")) {
+          return event.image;
+        }
+        const apiBase = import.meta.env.VITE_API_BASE || "/api";
+        const base = apiBase.replace(/\/api\/?$/, "");
+        return `${base}${event.image}`;
+      })()})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     borderRadius: "12px",
@@ -172,6 +180,68 @@ export default function EventDetail() {
       <h2>{event.name}</h2>
       <p><strong>Intro:</strong> {event.intro}</p>
       <p><strong>Description:</strong> {event.description}</p>
+
+      {/* Event Info Fields - Right after Description */}
+      {event.info_fields && event.info_fields.length > 0 && (
+        <div style={{ marginTop: "24px" }}>
+          {event.info_fields
+            .filter((field) => {
+              // Filter out null, undefined, empty string, empty array, empty object
+              if (!field.value) return false;
+              if (typeof field.value === "string" && field.value.trim() === "") return false;
+              if (Array.isArray(field.value) && field.value.length === 0) return false;
+              if (typeof field.value === "object" && Object.keys(field.value).length === 0) return false;
+              return true;
+            })
+            .map((field, index) => (
+              <div key={field.key || index} style={{ marginBottom: "20px" }}>
+                <h3 style={{ fontWeight: "bold", marginBottom: "8px" }}>
+                  {field.label}
+                </h3>
+                
+                {field.field_type === "url" && field.value && (
+                  <p>
+                    <a
+                      href={field.value}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "#007bff",
+                        textDecoration: "underline",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      {field.value}
+                    </a>
+                  </p>
+                )}
+                
+                {field.field_type === "json" && field.value && (
+                  <ul style={{ marginLeft: "20px" }}>
+                    {Array.isArray(field.value) ? (
+                      field.value.map((item, idx) => (
+                        <li key={idx}>{typeof item === "object" ? JSON.stringify(item) : String(item)}</li>
+                      ))
+                    ) : typeof field.value === "object" ? (
+                      Object.entries(field.value).map(([key, val], idx) => (
+                        <li key={idx}>
+                          <strong>{key}:</strong> {typeof val === "object" ? JSON.stringify(val) : String(val)}
+                        </li>
+                      ))
+                    ) : (
+                      <li>{String(field.value)}</li>
+                    )}
+                  </ul>
+                )}
+                
+                {(field.field_type === "text" || field.field_type === "description") && field.value && (
+                  <p style={{ whiteSpace: "pre-wrap" }}>{field.value}</p>
+                )}
+              </div>
+            ))}
+        </div>
+      )}
+
       <p><strong>Location:</strong> {event.location || "TBA"}</p>
       <p><strong>Start Time:</strong> {new Date(event.start_time).toLocaleString()}</p>
       <p><strong>End Time:</strong> {new Date(event.end_time).toLocaleString()}</p>

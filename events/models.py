@@ -188,3 +188,34 @@ class EventSubmission(models.Model):
     is_submitted = models.BooleanField(default=False)  # 🔥 FLAG
     submitted_at = models.DateTimeField(auto_now_add=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class EventInfoField(models.Model):
+    FIELD_TYPES = [
+        ("text", "Text"),
+        ("description", "Long Description"),
+        ("json", "JSON"),
+        ("url", "URL"),
+    ]
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="info_fields")
+
+    key = models.CharField(max_length=100)       # internal name
+    label = models.CharField(max_length=255)     # UI name
+    field_type = models.CharField(max_length=20, choices=FIELD_TYPES)
+
+    value_text = models.TextField(blank=True, null=True)
+    value_json = models.JSONField(blank=True, null=True)
+    value_url = models.URLField(blank=True, null=True)
+
+    def get_value(self):
+        if self.field_type in ["text", "description"]:
+            return self.value_text
+        if self.field_type == "json":
+            return self.value_json
+        if self.field_type == "url":
+            return self.value_url
+        return None
+
+    def __str__(self):
+        return f"{self.event.name} - {self.label}"

@@ -469,3 +469,33 @@ class EventSubmissionView(generics.GenericAPIView):
             )
 
         return Response({"message": "Submission completed"})
+
+
+from rest_framework.parsers import MultiPartParser, FormParser
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+
+class FileUploadView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        if 'file' not in request.FILES:
+            return Response({"error": "No file provided"}, status=400)
+        
+        file = request.FILES['file']
+        
+        # Validate file size (max 10MB)
+        if file.size > 10 * 1024 * 1024:
+            return Response({"error": "File size exceeds 10MB limit"}, status=400)
+        
+        # Save file to media/submissions/
+        file_path = default_storage.save(f'submissions/{file.name}', ContentFile(file.read()))
+        file_url = default_storage.url(file_path)
+        
+        # Return full URL
+        request_scheme = request.scheme
+        request_host = request.get_host()
+        full_url = f"{request_scheme}://{request_host}{file_url}"
+        
+        return Response({"url": full_url}, status=201)

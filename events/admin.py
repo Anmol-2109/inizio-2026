@@ -4,6 +4,14 @@ from accounts.models import User
 from .utils import notify_user
 from .models import EventCustomField, EventSubmission
 
+
+from .models import EventInfoField
+
+class EventInfoFieldInline(admin.TabularInline):
+    model = EventInfoField
+    extra = 3
+
+
 @admin.register(EventCustomField)
 class EventCustomFieldAdmin(admin.ModelAdmin):
     list_display = ("event", "label", "field_type", "required")
@@ -21,7 +29,7 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ("name", "slug")
     list_filter = ("is_active", "start_time", "end_time")
     ordering = ("start_time",)
-    inlines = [EventCustomFieldInline]
+    inlines = [EventCustomFieldInline,EventInfoFieldInline]
     
     def save_model(self, request, obj, form, change):
         """
