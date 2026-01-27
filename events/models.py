@@ -159,3 +159,32 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notify({self.user.email})"
+    
+
+class EventCustomField(models.Model):
+    FIELD_TYPES = [
+        ("text", "Text"),
+        ("textarea", "Textarea"),
+        ("file", "File Upload"),
+        ("url", "URL"),
+        ("number", "Number"),
+    ]
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="custom_fields")
+    name = models.CharField(max_length=100)  # internal key
+    label = models.CharField(max_length=255)  # frontend label
+    field_type = models.CharField(max_length=20, choices=FIELD_TYPES)
+    required = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.event.name} - {self.label}"
+
+
+class EventSubmission(models.Model):
+    team = models.ForeignKey(EventTeam, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    responses = models.JSONField()  # {"ppt": "url", "desc": "abc"}
+
+    is_submitted = models.BooleanField(default=False)  # 🔥 FLAG
+    submitted_at = models.DateTimeField(auto_now_add=True,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)

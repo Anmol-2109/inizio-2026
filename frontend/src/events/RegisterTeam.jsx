@@ -456,10 +456,7 @@ export default function RegisterTeam() {
         teamsMap[event.id] = teamId.toString();
       }
       localStorage.setItem("user_teams", JSON.stringify(teamsMap));
-      
-      
-      
-      navigate(`/events/team/${teamId}`, { replace: true });
+      navigate(`/events/${event_id}/submit-form`, { replace: true });
     } catch (error) {
       console.error("Register team error:", error);
       const errorData = error.response?.data;

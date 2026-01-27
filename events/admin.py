@@ -2,6 +2,18 @@ from django.contrib import admin
 from .models import Event, EventTeam, EventTeamMember, EventInviteToken, Notification, DeviceToken
 from accounts.models import User
 from .utils import notify_user
+from .models import EventCustomField, EventSubmission
+
+@admin.register(EventCustomField)
+class EventCustomFieldAdmin(admin.ModelAdmin):
+    list_display = ("event", "label", "field_type", "required")
+    list_filter = ("event", "field_type")
+
+
+class EventCustomFieldInline(admin.TabularInline):
+    model = EventCustomField
+    extra = 3   # show 3 empty fields by default
+
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
@@ -9,6 +21,7 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ("name", "slug")
     list_filter = ("is_active", "start_time", "end_time")
     ordering = ("start_time",)
+    inlines = [EventCustomFieldInline]
     
     def save_model(self, request, obj, form, change):
         """
@@ -93,3 +106,9 @@ class DeviceTokenAdmin(admin.ModelAdmin):
     search_fields = ("user__email", "token")
     readonly_fields = ("created_at",)
     ordering = ("-created_at",)
+
+
+@admin.register(EventSubmission)
+class EventSubmissionAdmin(admin.ModelAdmin):
+    list_display = ("event", "team", "created_at","is_submitted","submitted_at")
+

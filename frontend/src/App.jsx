@@ -21,6 +21,7 @@ import EventDetail from "./events/EventDetail";
 import RegisterTeam from "./events/RegisterTeam";
 import TeamDetail from "./events/TeamDetail";
 import AddTeamMember from "./events/AddTeamMember";
+import EventSubmission from "./events/EventSubmission";
 import Notifications from "./events/Notifications";
 import AdminEventList from "./events/AdminEventList";
 import AdminEventCreate from "./events/AdminEventCreate";
@@ -124,6 +125,14 @@ function App() {
             element={
               <AuthRoute>
                 <RegisterTeam />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="events/:event_id/submit-form"
+            element={
+              <AuthRoute>
+                <EventSubmission />
               </AuthRoute>
             }
           />

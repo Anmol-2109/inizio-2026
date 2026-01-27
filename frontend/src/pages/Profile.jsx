@@ -103,11 +103,12 @@ export default function Profile() {
             <span className="profile-label">Email</span>
             {renderValue(profile.email)}
 
-            <span className="profile-label">Branch</span>
-            {renderValue(profile.department)}
-
-            <span className="profile-label">Year</span>
-            {renderValue(profile.year)}
+            {profile.college_name && (
+              <>
+                <span className="profile-label">College</span>
+                {renderValue(profile.college_name)}
+              </>
+            )}
 
             <span className="profile-label">Phone</span>
             {renderValue(profile.phone)}

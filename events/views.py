@@ -403,3 +403,69 @@ class NotificationReadView(generics.UpdateAPIView):
         notif.save()
 
         return Response({"message": "Marked as read"})
+
+
+from rest_framework import generics
+from .models import EventCustomField
+from .serializers import EventCustomFieldSerializer
+
+class EventCustomFieldListView(generics.ListAPIView):
+    serializer_class = EventCustomFieldSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        return EventCustomField.objects.filter(event_id=self.kwargs["event_id"])
+
+from .models import EventSubmission
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .serializers import EventSubmissionSerializer
+
+class EventSubmissionView(generics.GenericAPIView):
+    serializer_class = EventSubmissionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, event_id):
+        team = get_object_or_404(EventTeam, leader=request.user, event_id=event_id)
+
+        # Find latest submission (if any) for this team & event
+        existing_submission = EventSubmission.objects.filter(
+            team=team,
+            event_id=event_id,
+        ).order_by("-created_at").first()
+
+        if existing_submission and existing_submission.is_submitted:
+            return Response({"error": "Already submitted"}, status=400)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        responses = serializer.validated_data["responses"]
+
+        fields = EventCustomField.objects.filter(event_id=event_id)
+        errors = {}
+
+        for field in fields:
+            key = field.name
+            value = responses.get(key)
+
+            if field.required and not value:
+                errors[key] = f"{field.label} is required"
+
+        if errors:
+            return Response({"errors": errors}, status=400)
+
+        # Either update existing draft or create new submission
+        if existing_submission:
+            existing_submission.responses = responses
+            existing_submission.is_submitted = True
+            existing_submission.submitted_at = timezone.now()
+            existing_submission.save()
+        else:
+            EventSubmission.objects.create(
+                team=team,
+                event_id=event_id,
+                responses=responses,
+                is_submitted=True
+            )
+
+        return Response({"message": "Submission completed"})

@@ -3,7 +3,8 @@ from .views import (
     UpcomingEventsView, PastEventsView, EventDetailView,
     RegisterTeamView, TeamDetailView, AcceptInviteRedirectView,RemoveTeamMemberView,
     AcceptTeamMemberView,AddTeamMemberView,LeaveTeamView,AdminEventListCreateView,
-    AdminEventSoftDeleteView,AdminEventUpdateView,NotificationListView,NotificationReadView,SaveDeviceTokenView
+    AdminEventSoftDeleteView,AdminEventUpdateView,NotificationListView,NotificationReadView,SaveDeviceTokenView,
+    EventCustomFieldListView,EventSubmissionView
 )
 
 urlpatterns = [
@@ -29,6 +30,10 @@ urlpatterns = [
     path("admin/", AdminEventListCreateView.as_view(), name="admin-events"),
     path("admin/<int:id>/", AdminEventUpdateView.as_view(), name="admin-event-update"),
     path("admin/<int:id>/delete/", AdminEventSoftDeleteView.as_view(), name="admin-event-delete"),
+
+    path("<int:event_id>/custom-fields/", EventCustomFieldListView.as_view()),
+    path("<int:event_id>/submit-form/", EventSubmissionView.as_view()),
+
 
     path("notifications/", NotificationListView.as_view()),
     path("notifications/<int:pk>/read/", NotificationReadView.as_view()),

@@ -192,8 +192,6 @@ export default function CompleteProfile() {
   const [formData, setFormData] = useState({
     full_name: "",
     college_name: "",
-    department: "CSE",
-    year: "",
     phone: ""
   });
   const [loading, setLoading] = useState(false);
@@ -207,13 +205,12 @@ export default function CompleteProfile() {
       try {
         const res = await api.get("/auth/profile/");
         if (res.data) {
-          setFormData({
+          setFormData((prev) => ({
+            ...prev,
             full_name: res.data.full_name || "",
             college_name: res.data.college_name || "",
-            department: res.data.department || "CSE",
-            year: res.data.year || "",
             phone: res.data.phone || ""
-          });
+          }));
           
           // Update is_staff in auth store if profile returns it
           if (res.data.is_staff !== undefined) {
@@ -255,17 +252,6 @@ if (!/^[A-Za-z ]+$/.test(name)) {
 }
 
 
-    if (!formData.department || formData.department.trim() === "") {
-      setError("Department is required");
-      return;
-    }
-
-  if (!formData.year) {
-  setError("Year is required.");
-  return;
-}
-
-
     if (!formData.phone || formData.phone.trim() === "") {
       setError("Phone number is required");
       return;
@@ -303,12 +289,10 @@ if (college.length > 150) {
       setLoading(true);
       setError("");
       
-      // Backend expects: full_name, department, year, phone
+      // Backend expects: full_name, college_name, phone (department/year kept as-is on backend)
       const res = await api.put("/auth/profile/", {
         full_name: formData.full_name.trim(),
          college_name: formData.college_name.trim(),
-        department: formData.department,
-        year: formData.year.trim(),
         phone: formData.phone.trim()
       });
       
@@ -382,48 +366,6 @@ finally {
               disabled={loading}
               required
             />
-          </div>
-
-          {/* Department */}
-          <div className="form-group">
-            <label className="form-label">Department *</label>
-            <select
-              className="form-select"
-              value={formData.department}
-              onChange={(e) => {
-                setFormData({ ...formData, department: e.target.value });
-                setError("");
-              }}
-              disabled={loading}
-              required
-            >
-              <option value="CSE">Computer Science & Engineering</option>
-              <option value="ECE">Electronics & Communication Engineering</option>
-              <option value="Mathematics">Mathematics</option>
-            </select>
-          </div>
-
-          {/* Year */}
-          <div className="form-group">
-            <label className="form-label">Year *</label>
-            <select
-  className="form-select"
-  value={formData.year}
-  onChange={(e) => {
-    setFormData({ ...formData, year: e.target.value });
-    setError("");
-  }}
-  disabled={loading}
-  required
->
-  <option value="">Select Year</option>
-  <option value="1st Year">1st Year</option>
-  <option value="2nd Year">2nd Year</option>
-  <option value="3rd Year">3rd Year</option>
-  <option value="4th Year">4th Year</option>
-  <option value="5th Year">5th Year</option>
-</select>
-
           </div>
 
           {/* Phone */}

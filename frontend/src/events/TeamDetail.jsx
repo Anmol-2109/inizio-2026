@@ -368,6 +368,7 @@ export default function TeamDetail() {
   const activeMembersCount = activeMembers.length;
   const acceptedCount = acceptedMembers.length;
   const isBelowMinimum = acceptedCount < team.event.min_team_size;
+  const isFormSubmitted = team.is_form_submitted;
 
   return (
     <div className="team-detail-page">
@@ -431,6 +432,22 @@ export default function TeamDetail() {
           {isLeader && (
             <div className="leader-controls">
               <p className="leader-controls-label">Leader Controls:</p>
+              {!isFormSubmitted && (
+                <div className="team-status-warning" style={{ marginBottom: "12px" }}>
+                  <p className="title">⚠ Submission Pending</p>
+                  <p>
+                    Your team registration is not complete. Please fill the event
+                    submission form to finalize your participation.
+                  </p>
+                  <button
+                    className="btn-add-member"
+                    style={{ marginTop: "8px" }}
+                    onClick={() => navigate(`/events/${team.event.id}/submit-form`)}
+                  >
+                    Fill Submission Form
+                  </button>
+                </div>
+              )}
               {activeMembersCount < team.event.max_team_size && (
                 <Link to={`/events/teams/${id}/add-member`}>
                   <button className="btn-add-member">+ Add Member</button>

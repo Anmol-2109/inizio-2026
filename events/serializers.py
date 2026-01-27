@@ -17,6 +17,7 @@ class EventCardSerializer(serializers.ModelSerializer):
         model = Event
         fields = [
             "id", "name", "slug", "intro", "location",
+            "image", 
             "start_time", "end_time",
             "min_team_size", "max_team_size",
             "is_registered"
@@ -96,13 +97,28 @@ class TeamMemberSerializer(serializers.ModelSerializer):
         return obj.email.lower() == user.email.lower()
 
 
+from .models import EventSubmission
+
+
 class TeamDetailSerializer(serializers.ModelSerializer):
     members = TeamMemberSerializer(many=True)
     event = EventCardSerializer()
+    is_form_submitted = serializers.SerializerMethodField()
 
     class Meta:
         model = EventTeam
-        fields = ["id", "team_name", "event", "members", "is_active"]
+        fields = ["id", "team_name", "event", "members", "is_active","is_form_submitted"]
+
+    def get_is_form_submitted(self, obj):
+        """
+        Safely check if there's any submitted EventSubmission
+        for this team and its event.
+        """
+        return EventSubmission.objects.filter(
+            team=obj,
+            event=obj.event,
+            is_submitted=True
+        ).exists()
 
 
 class RegisterTeamSerializer(serializers.Serializer):
@@ -223,3 +239,14 @@ class NotificationSerializer(serializers.ModelSerializer):
 
 class DeviceTokenSerializer(serializers.Serializer):
     token = serializers.CharField(max_length=255)
+
+
+from .models import EventCustomField
+
+class EventCustomFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventCustomField
+        fields = ["name", "label", "field_type", "required"]
+
+class EventSubmissionSerializer(serializers.Serializer):
+    responses = serializers.DictField()

@@ -3,6 +3,16 @@ import "./EventCard.css";
 
 const PLACEHOLDER_IMAGE = "";
 
+const getMediaUrl = (image) => {
+  if (!image) return PLACEHOLDER_IMAGE;
+  if (image.startsWith("http://") || image.startsWith("https://")) {
+    return image;
+  }
+  const apiBase = import.meta.env.VITE_API_BASE || "/api";
+  const base = apiBase.replace(/\/api\/?$/, "");
+  return `${base}${image}`;
+};
+
 export default function EventCard({
   id,
   name,
@@ -12,13 +22,13 @@ export default function EventCard({
   image,
   isRegistered,
 }) {
-  const cardImage = image || PLACEHOLDER_IMAGE;
+  const cardImage = getMediaUrl(image);
 
   return (
     <Link to={`/events/${id}`} className="event-card">
       <div
         className="event-card-image"
-        style={{ backgroundImage: `url(${image})` }}
+        style={{ backgroundImage: `url(${cardImage})` }}
       />
 
       <div className="event-card-content">
