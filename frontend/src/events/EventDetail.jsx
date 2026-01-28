@@ -263,7 +263,7 @@ export default function EventDetail() {
       
       {isRegistrationDisabled && !event.is_registered && (
         <p style={{ color: "red", marginTop: 10, fontWeight: "bold" }}>
-          ⚠️ Registration is closed for this event
+          ⚠️ Registration is closed or Not Applicable through here
         </p>
       )}
       
