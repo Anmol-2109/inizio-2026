@@ -12,6 +12,14 @@ class EventInfoFieldInline(admin.TabularInline):
     extra = 3
 
 
+@admin.register(EventInfoField)
+class EventInfoFieldAdmin(admin.ModelAdmin):
+    list_display = ("event", "label", "field_type", "key")
+    list_filter = ("event", "field_type")
+    search_fields = ("label", "key", "event__name")
+
+
+
 @admin.register(EventCustomField)
 class EventCustomFieldAdmin(admin.ModelAdmin):
     list_display = ("event", "label", "field_type", "required")
