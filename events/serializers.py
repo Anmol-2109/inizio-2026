@@ -19,7 +19,7 @@ class EventCardSerializer(serializers.ModelSerializer):
             "id", "name", "slug", "intro", "location",
             "image", 
             "start_time", "end_time",
-            "min_team_size", "max_team_size",
+            "min_team_size", "max_team_size","image_url",
             "is_registered"
         ]
 

@@ -230,7 +230,7 @@ export default function Events() {
                   ? formatDateTime(event.start_time || event.date)
                   : "TBA"
               }
-              image={event.image || event.banner}
+              image={event.image_url}
               isRegistered={Boolean(event.is_registered)}
             />
           ))}

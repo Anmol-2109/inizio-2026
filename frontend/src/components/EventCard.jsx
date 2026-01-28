@@ -4,13 +4,7 @@ import "./EventCard.css";
 const PLACEHOLDER_IMAGE = "";
 
 const getMediaUrl = (image) => {
-  if (!image) return PLACEHOLDER_IMAGE;
-  if (image.startsWith("http://") || image.startsWith("https://")) {
-    return image;
-  }
-  const apiBase = import.meta.env.VITE_API_BASE || "/api";
-  const base = apiBase.replace(/\/api\/?$/, "");
-  return `${base}${image}`;
+  return image || PLACEHOLDER_IMAGE;
 };
 
 export default function EventCard({
@@ -55,5 +49,3 @@ export default function EventCard({
     </Link>
   );
 }
-
-
