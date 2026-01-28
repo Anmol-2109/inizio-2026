@@ -26,7 +26,7 @@ class Event(models.Model):
     image = models.ImageField(
         upload_to="events/images/",
         null=True,
-        blank=False,
+        blank=True,
     )
     image_url = models.URLField(blank=True, null=True)
 
