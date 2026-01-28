@@ -237,11 +237,11 @@ export default function EventDetail() {
         </div>
       )}
 
-      <p><strong>Location:</strong> {event.location || "TBA"}</p>
+      {/* <p><strong>Location:</strong> {event.location || "TBA"}</p>
       <p><strong>Start Time:</strong> {new Date(event.start_time).toLocaleString()}</p>
       <p><strong>Registration Open:</strong> {new Date(event.registration_open).toLocaleString()}</p>
       <p><strong>Registration Close:</strong> {new Date(event.registration_close).toLocaleString()}</p>
-      <p><strong>Team Size:</strong> {event.min_team_size} - {event.max_team_size} members</p>
+      <p><strong>Team Size:</strong> {event.min_team_size} - {event.max_team_size} members</p> */}
 
       <h3>Rules</h3>
 
