@@ -13,7 +13,7 @@ class Event(models.Model):
     location = models.CharField(max_length=255, blank=True)
 
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    end_time = models.DateTimeField(blank=True,null=True)
 
     registration_open = models.DateTimeField(default=timezone.now)
     registration_close = models.DateTimeField(default=timezone.now)
@@ -28,6 +28,7 @@ class Event(models.Model):
         null=True,
         blank=False,
     )
+    image_url = models.URLField(blank=True, null=True)
 
     # 📜 Required rules array
     rules = models.JSONField(

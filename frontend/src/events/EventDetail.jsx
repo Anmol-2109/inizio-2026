@@ -156,17 +156,9 @@ export default function EventDetail() {
     width: "100%",
     height: "320px",
     backgroundImage: `linear-gradient(
-        rgba(0,0,0,0.45),
-        rgba(0,0,0,0.45)
-      ), url(${(() => {
-        if (!event.image) return "";
-        if (event.image.startsWith("http://") || event.image.startsWith("https://")) {
-          return event.image;
-        }
-        const apiBase = import.meta.env.VITE_API_BASE || "/api";
-        const base = apiBase.replace(/\/api\/?$/, "");
-        return `${base}${event.image}`;
-      })()})`,
+      rgba(0,0,0,0.45),
+      rgba(0,0,0,0.45)
+    ), url(${event?.image_url || ""})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     borderRadius: "12px",
@@ -176,7 +168,10 @@ export default function EventDetail() {
     color: "#fff",
     marginBottom: "24px",
   }}
-></div>
+>
+</div>
+
+
       <h2>{event.name}</h2>
       <p><strong>Intro:</strong> {event.intro}</p>
       <p><strong>Description:</strong> {event.description}</p>
@@ -244,7 +239,6 @@ export default function EventDetail() {
 
       <p><strong>Location:</strong> {event.location || "TBA"}</p>
       <p><strong>Start Time:</strong> {new Date(event.start_time).toLocaleString()}</p>
-      <p><strong>End Time:</strong> {new Date(event.end_time).toLocaleString()}</p>
       <p><strong>Registration Open:</strong> {new Date(event.registration_open).toLocaleString()}</p>
       <p><strong>Registration Close:</strong> {new Date(event.registration_close).toLocaleString()}</p>
       <p><strong>Team Size:</strong> {event.min_team_size} - {event.max_team_size} members</p>
