@@ -225,11 +225,17 @@ export default function Events() {
               name={event.name}
               intro={event.intro || event.description || ""}
               venue={event.venue || event.location || "TBA"}
-              dateTime={
-                event.start_time || event.date
-                  ? formatDateTime(event.start_time || event.date)
-                  : "TBA"
-              }
+             dateTime={
+  event.start_time || event.date
+    ? new Date(event.start_time || event.date).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+    : "TBA"
+}
+
+
               image={event.image_url}
               isRegistered={Boolean(event.is_registered)}
             />
