@@ -263,7 +263,7 @@ export default function EventDetail() {
       
       {isRegistrationDisabled && !event.is_registered && (
         <p style={{ color: "red", marginTop: 10, fontWeight: "bold" }}>
-          ⚠️ Registration is closed or Not Applicable through here
+          ⚠️ Registration is done through other way As mentioned above
         </p>
       )}
       
@@ -297,7 +297,7 @@ export default function EventDetail() {
                 opacity: isRegistrationDisabled ? 0.6 : 1
               }}
             >
-              {isRegistrationDisabled ? "Registration Closed" : "Register Team"}
+              {isRegistrationDisabled ? "Registration not by here" : "Register Team"}
             </button>
           )
         )}
