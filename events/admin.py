@@ -5,6 +5,66 @@ from .utils import notify_user
 from .models import EventCustomField, EventSubmission
 
 
+
+from django.contrib import admin
+from .models import EventSubmission
+
+
+
+# @admin.action(description="Export selected submissions to Google Sheets")
+# def export_event_submissions(modeladmin, request, queryset):
+#     sheet = get_google_sheet()
+
+#     headers = [
+#         "Event Name",
+#         "Team Name",
+#         "Leader Email",
+#         "Team Members",
+#         "Member Status",
+#         "Submission Responses",
+#         "Is Submitted",
+#         "Submitted At",
+#         "Created At",
+#     ]
+
+#     # Add header only once
+#     if sheet.get_all_values() == []:
+#         sheet.append_row(headers)
+
+#     for submission in queryset:
+#         team = submission.team
+#         event = submission.event
+
+#         leader_email = team.leader.email if team.leader else ""
+
+#         members = team.members.all()
+#         member_emails = ", ".join([m.email for m in members])
+#         member_status = ", ".join([m.status for m in members])
+
+#         responses = json.dumps(submission.responses, ensure_ascii=False)
+
+#         row = [
+#             event.name,
+#             team.team_name or "",
+#             leader_email,
+#             member_emails,
+#             member_status,
+#             responses,
+#             submission.is_submitted,
+#             submission.submitted_at.strftime("%Y-%m-%d %H:%M") if submission.submitted_at else "",
+#             submission.created_at.strftime("%Y-%m-%d %H:%M"),
+#         ]
+
+#         sheet.append_row(row)
+
+
+# @admin.register(EventSubmission)
+# class EventSubmissionAdmin(admin.ModelAdmin):
+#     list_display = ("event", "team", "is_submitted", "submitted_at")
+#     actions = [export_event_submissions]
+
+
+
 from .models import EventInfoField
 
 class EventInfoFieldInline(admin.TabularInline):
@@ -123,8 +183,85 @@ class DeviceTokenAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at",)
     ordering = ("-created_at",)
 
+from django.contrib import admin, messages
+from .models import EventSubmission
+from .utils import get_spreadsheet, safe_sheet_name
+
+
+FIXED_HEADERS = [
+    "Submission ID",
+    "Team Name",
+    "Leader Email",
+    "Team Members",
+    "Member Status",
+    "Submitted At",
+]
+
+
+@admin.action(description="Export submissions (dynamic per event)")
+def export_event_submissions(modeladmin, request, queryset):
+    spreadsheet = get_spreadsheet()
+
+    exported = 0
+    skipped = 0
+
+    for submission in queryset:
+        event = submission.event
+        team = submission.team
+        responses = submission.responses or {}
+
+        sheet_name = safe_sheet_name(event.name)
+
+        # ---- get or create worksheet ----
+        try:
+            worksheet = spreadsheet.worksheet(sheet_name)
+            headers = worksheet.row_values(1)
+        except Exception:
+            # 🔥 FIRST TIME FOR THIS EVENT
+            dynamic_headers = list(responses.keys())
+            headers = FIXED_HEADERS + dynamic_headers
+
+            worksheet = spreadsheet.add_worksheet(
+                title=sheet_name,
+                rows="1000",
+                cols=str(len(headers))
+            )
+            worksheet.append_row(headers)
+
+        # ---- duplicate protection ----
+        existing_ids = worksheet.col_values(1)
+        if str(submission.id) in existing_ids:
+            skipped += 1
+            continue
+
+        # ---- build row dynamically ----
+        members = team.members.all()
+
+        row = [
+            submission.id,
+            team.team_name or "",
+            team.leader.email if team.leader else "",
+            ", ".join(m.email for m in members),
+            ", ".join(m.status for m in members),
+            submission.submitted_at.strftime("%Y-%m-%d %H:%M")
+            if submission.submitted_at else "",
+        ]
+
+        # 🔥 JSON → columns (order follows headers)
+        for key in headers[len(FIXED_HEADERS):]:
+            row.append(responses.get(key, ""))
+
+        worksheet.append_row(row)
+        exported += 1
+
+    messages.success(
+        request,
+        f"Export complete: {exported} added, {skipped} skipped."
+    )
+
 
 @admin.register(EventSubmission)
 class EventSubmissionAdmin(admin.ModelAdmin):
-    list_display = ("event", "team", "created_at","is_submitted","submitted_at")
-
+    list_display = ("id", "event", "team", "is_submitted")
+    list_filter = ("event",)
+    actions = [export_event_submissions]
