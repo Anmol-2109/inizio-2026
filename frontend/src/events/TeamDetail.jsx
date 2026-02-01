@@ -387,14 +387,14 @@ export default function TeamDetail() {
           {isBelowMinimum && (
             <div className="team-status-warning">
               <p className="title">⚠ Team Status: Inactive</p>
-              <p>Your team has {acceptedCount} accepted member(s), but needs at least {team.event.min_team_size} member(s) to be active.</p>
+              <p>Your team has {acceptedCount} accepted member(s), but needs at least {team.event.min_team_size} member(s) to be active. If you already add members ask your team member to login and accept the  invite then your team become active.</p>
             </div>
           )}
 
           {!isBelowMinimum && team.is_active && (
             <div className="team-status-success">
               <p className="title">✓ Team Status: Active</p>
-              <p>Your team has {acceptedCount} accepted member(s) and meets the minimum requirement.</p>
+              <p>Your team has {acceptedCount} accepted member(s) and meets the minimum requirement.If there is any invited member Ask them to login Go on Event detail page then on team page and accept Invite"</p>
             </div>
           )}
 
