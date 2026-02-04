@@ -297,7 +297,7 @@ export default function EventDetail() {
                 opacity: isRegistrationDisabled ? 0.6 : 1
               }}
             >
-              {isRegistrationDisabled ? "Registration not by here" : "Register Team"}
+              {isRegistrationDisabled ? "Registration closed" : "Register Team"}
             </button>
           )
         )}
