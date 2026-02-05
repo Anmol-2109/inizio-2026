@@ -1,0 +1,120 @@
+.team-section1 {
+  width: 100%;
+  padding: 112px 64px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+  background-color: #041e28;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.team-header1 {
+  max-width: 768px;
+  width: 100%;
+  text-align: center;
+}
+
+.team-title1 {
+  margin: 0 0 16px;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #ae22ff, #f24e1e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.team-description1 {
+  margin: 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.team-layout1 {
+  width: 100%;
+  max-width: 1493px;
+}
+
+.team-members-grid1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  width: 100%;
+  justify-content: center; /* This centers the items */
+}
+
+/* Ensure cards have consistent width */
+.team-members-grid1 > * {
+  width: 100%;
+  max-width: 300px;
+  min-width: 280px;
+  flex: 0 0 auto;
+}
+
+@media (min-width: 1200px) {
+  .team-members-grid1 > * {
+    width: calc(25% - 24px); /* 4 columns */
+    max-width: 300px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .team-members-grid1 > * {
+    width: calc(33.333% - 22px); /* 3 columns */
+    max-width: 300px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 767px) {
+  .team-members-grid1 > * {
+    width: calc(50% - 16px); /* 2 columns */
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .team-section1 {
+    padding: 80px 32px;
+    gap: 64px;
+  }
+
+  .team-title1 {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .team-section1 {
+    padding: 64px 16px;
+    gap: 48px;
+  }
+
+  .team-header1 {
+    text-align: center;
+  }
+
+  .team-title1 {
+    font-size: 28px;
+  }
+
+  .team-description1 {
+    font-size: 16px;
+  }
+
+  .team-members-grid1 {
+    gap: 24px;
+  }
+
+  .team-members-grid1 > * {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}

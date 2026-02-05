@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import CompleteProfile from "./pages/CompleteProfile";
 
 import About from "./pages/About";
+import TeamPage from "./pages/Team";
 
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -54,6 +55,15 @@ function App() {
             element={
              <PublicRoute>
                <About />
+             </PublicRoute>
+            }
+          />
+
+          <Route
+            path="team"
+            element={
+             <PublicRoute>
+               <TeamPage />
              </PublicRoute>
             }
           />

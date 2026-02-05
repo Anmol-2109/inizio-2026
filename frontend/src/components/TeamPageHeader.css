@@ -1,0 +1,241 @@
+.team-header-section1 {
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  padding: 120px 64px;
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.team-header-content1 {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.team-header-text1 {
+  max-width: 900px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.team-header-title1 {
+  margin: 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #c35aff 0%, #80daff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.team-header-description1 {
+  margin: 0;
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.95);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.team-header-actions1 {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.team-header-btn1 {
+  font-family: "Roboto", system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 14px 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.team-header-btn-primary1 {
+  background: linear-gradient(135deg, #c35aff 0%, #80daff 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(195, 90, 255, 0.3);
+}
+
+.team-header-btn-primary1:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(195, 90, 255, 0.5);
+}
+
+.team-header-btn-primary1:active {
+  transform: translateY(0);
+}
+
+.team-header-btn-secondary1 {
+  color: #ffffff;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.team-header-btn-secondary1:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+}
+
+.team-header-btn-secondary1:active {
+  transform: translateY(0);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .team-header-section1 {
+    padding: 100px 48px;
+    min-height: 380px;
+  }
+
+  .team-header-text1 {
+    max-width: 800px;
+    gap: 24px;
+  }
+
+  .team-header-title1 {
+    font-size: 48px;
+  }
+
+  .team-header-description1 {
+    font-size: 17px;
+  }
+
+  .team-header-content1 {
+    gap: 36px;
+  }
+}
+
+/* Mobile landscape / Small tablet */
+@media (max-width: 768px) {
+  .team-header-section1 {
+    padding: 80px 32px;
+    min-height: 340px;
+  }
+
+  .team-header-text1 {
+    max-width: 680px;
+    gap: 20px;
+  }
+
+  .team-header-title1 {
+    font-size: 40px;
+  }
+
+  .team-header-description1 {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .team-header-content1 {
+    gap: 32px;
+  }
+
+  .team-header-btn1 {
+    padding: 12px 28px;
+    font-size: 15px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .team-header-section1 {
+    padding: 64px 24px;
+    min-height: 300px;
+  }
+
+  .team-header-title1 {
+    font-size: 34px;
+  }
+
+  .team-header-description1 {
+    font-size: 15px;
+  }
+
+  .team-header-actions1 {
+    gap: 12px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .team-header-section1 {
+    padding: 56px 20px;
+  }
+
+  .team-header-text1 {
+    gap: 18px;
+  }
+
+  .team-header-title1 {
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  .team-header-description1 {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .team-header-content1 {
+    gap: 28px;
+  }
+
+  .team-header-actions1 {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .team-header-btn1 {
+    width: 100%;
+    max-width: 300px;
+    padding: 13px 24px;
+    font-size: 15px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 375px) {
+  .team-header-section1 {
+    padding: 48px 16px;
+  }
+
+  .team-header-title1 {
+    font-size: 26px;
+  }
+
+  .team-header-description1 {
+    font-size: 13px;
+  }
+}

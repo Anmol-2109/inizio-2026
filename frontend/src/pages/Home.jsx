@@ -45,7 +45,7 @@ export default function Home() {
       />
 
       <StatsSection />
-
+      
       <UpcomingEventHighlight
         title="Don't miss our flagship event"
         subtitle="The annual hackathon brings together builders, thinkers, and dreamers. Twenty Four hours. One mission. Build something that matters."
@@ -58,10 +58,6 @@ export default function Home() {
       />
 
       <HowWeWorkSection />
-
-      <SponsorsSection />
-
-      
 
       <ContactSection />
     </>

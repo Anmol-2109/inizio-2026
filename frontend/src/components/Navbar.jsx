@@ -361,7 +361,7 @@ const links = [
   { label: "Home", to: "/" },
   { label: "Events", to: "/events" },
   { label: "About", to: "/about" },
-  { label: "Team", to: "#"},
+  { label: "Team", to: "/team"},
 ];
 
 export default function Navbar() {

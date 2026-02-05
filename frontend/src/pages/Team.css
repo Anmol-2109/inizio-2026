@@ -1,0 +1,11 @@
+
+.team-page {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #041e28;
+  color: #ffffff;
+}
+
+.team-page-main {
+  width: 100%;
+}
