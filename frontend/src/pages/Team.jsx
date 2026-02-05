@@ -19,6 +19,7 @@ import bhavyapriya from "../assets/Teams/PR/BHAVYA PRIYA.jpg"
 import harsh from "../assets/Teams/PR/HARSH DUBEY.png"
 import kausik from "../assets/Teams/PR/KAUSIK PATRA.jpeg"
 import krish from "../assets/Teams/PR/YADAV SHIVSHANKAR.jpg";
+import bhavya from "../assets/Teams/PR/BHAVYA SINGH.jpg";
 
 
 import ashutosh from "../assets/Teams/Event/ASHUTOSH PARMAR.jpg"
@@ -120,6 +121,12 @@ const prTeamMembers = [
     image: krish,
     role: "Member",
     linkedinUrl: "https://www.linkedin.com/in/krish-yadav-203104381/",
+  },
+  {
+    name: "Bhavya Pratap Singh ",
+    image: bhavya,
+    role: "Member",
+    linkedinUrl: "https://www.linkedin.com/in/bhavya-pratap-singh-46349b372/",
   },
 ];
 
