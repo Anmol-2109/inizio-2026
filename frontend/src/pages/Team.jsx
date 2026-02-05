@@ -4,7 +4,7 @@ import EachTeam from "../components/EachTeam";
 import "./Team.css";
 
 import anmol_img1 from "../assets/Teams/TechTeam/ANMOL SINGH.jpeg"
-import anshu from "../assets/Teams/TechTeam/ANSHU PRIYA.jpg"
+import anshu from "../assets/Teams/TechTeam/ANSHU PRIYA.JPG"
 import pratham from "../assets/Teams/TechTeam/PRATHAM SHARMA.jpeg"
 import renvat from "../assets/Teams/TechTeam/RENVAT RAM.jpeg"
 import vidisha from "../assets/Teams/TechTeam/VIDISHA BHARATI.jpeg"
