@@ -16,7 +16,7 @@ import akshat from "../assets/Teams/PR/AKSHAT KESHRI.jpg"
 import anupriya from "../assets/Teams/PR/ANUPRIYA SINGH.jpg"
 import anvesha from "../assets/Teams/PR/ANVESHA AYUSHI.jpeg"
 import bhavyapriya from "../assets/Teams/PR/BHAVYA PRIYA.jpg"
-import harsh from "../assets/Teams/PR/HARSH DUBEY.PNG"
+import harsh from "../assets/Teams/PR/HARSH DUBEY.png"
 import kausik from "../assets/Teams/PR/KAUSIK PATRA.jpeg"
 import krish from "../assets/Teams/PR/YADAV SHIVSHANKAR.jpg";
 
