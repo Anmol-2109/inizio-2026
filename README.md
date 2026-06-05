@@ -401,4 +401,3 @@ Developer of **INIZIO 2026**, the official Entrepreneurship Summit (E-Summit) pl
 
 This project was built to provide a scalable solution for event registrations, team management, notifications, submissions, and participant engagement for large-scale college events.
 
-```
